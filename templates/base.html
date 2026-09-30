@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+<title>{% block title %}Museum of Minimalism{% endblock %}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='site/css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/interactive.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flow.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+
+  <!-- HEADER (эталонная разметка milamiss/Online-museum, ссылки адаптированы под Flask-маршруты) -->
+  <header>
+    <div class="header container">
+      {% if request.endpoint == 'index' %}
+      <img src="{{ url_for('static', filename='site/img/Promo_main.svg') }}" alt="" class="bcg-promo">
+      {% endif %}
+      <div class="row justify-content-start">
+        <div class="logo-conteiner col-1">
+          <a href="{{ url_for('index') }}">
+            <img class="logo" src="{{ url_for('static', filename='site/img/logo MM.svg') }}" alt="Museum of Minimalism">
+          </a>
+        </div>
+        <nav class="d-none d-lg-flex align-items-center col-4">
+          <ul class="header-menu d-flex justify-content-between align-items-center w-100">
+            <li><a href="{{ url_for('index') }}#art" class="header-menu-link">Art</a></li>
+            <li><a href="{{ url_for('index') }}#exhibitions" class="header-menu-link">Exhibitions</a></li>
+            <li><a href="{{ url_for('index') }}#events" class="header-menu-link">Event</a></li>
+            <li><a href="{{ url_for('index') }}#future" class="header-menu-link">In Future</a></li>
+          </ul>
+        </nav>
+        <div class="d-flex align-items-center justify-content-between col-1 ml-auto">
+          <button class="burger-menu" id="menu-toggle-btn" area-label="меню" type="button"></button>
+          <button class="search" id="search-toggle-btn" area-label="поиск" type="button"></button>
+        </div>
+      </div>
+
+      <!-- Выпадающее меню и поиск — добавлены сверх оригинальной статики для реальной интерактивности (JS) -->
+      <nav class="menu-dropdown" id="menu-dropdown">
+        <a href="{{ url_for('index') }}#art">Art</a>
+        <a href="{{ url_for('index') }}#exhibitions">Exhibitions</a>
+        <a href="{{ url_for('index') }}#events">Event</a>
+        <a href="{{ url_for('index') }}#future">In Future</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-box">
+      <div class="search-input-row">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="search-input" placeholder="Search exhibitions, events…" autocomplete="off">
+        <span class="search-close" id="search-close-btn" title="Close">&times;</span>
+      </div>
+      <div class="search-results" id="search-results">
+        <div class="search-hint">Start typing to search the museum…</div>
+      </div>
+    </div>
+  </div>
+
+  {% block content %}{% endblock %}
+
+  <!-- FOOTER (эталонная разметка) -->
+  <footer>
+    <div class="container footer-block">
+      <div class="row">
+        <div class="col-12 col-lg-6 logo">
+          <svg width="77" height="32" viewBox="0 0 77 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.7654 25.6564C19.7929 28.1734 19.135 30.0612 18.3914 32.235C17.6477 30.0326 16.8182 27.7158 16.0174 25.6564L5.92071 0H0V37.1832H3.74692V11.3838C3.74692 8.86676 3.71832 6.60717 3.68972 4.14736C4.51919 6.63577 5.37726 8.98117 6.40695 11.5554L16.6752 37.1832H20.1075L28 18.4997C27 18.4997 27.4525 18.9982 28 18.4997C27 18.4997 26.5 18.4997 24 18.4997L20.7654 25.6564Z" fill="white" />
+            <path d="M34.1881 37.1832V0H30.241V37.1832H34.1881Z" fill="white" />
+            <path d="M40.5 37.1832V2.28882e-05H36.5529V37.1832H40.5Z" fill="white" />
+            <path d="M47 37.1832V0H43.0529V37.1832H47Z" fill="white" />
+            <path d="M56.2346 25.6564C57.2071 28.1734 57.8649 30.0612 58.6086 32.235C59.3523 30.0326 60.1818 27.7158 60.9826 25.6564L71.0793 0H77V37.1832H73.2531V11.3838C73.2531 8.86676 73.2817 6.60717 73.3103 4.14736C72.4808 6.63577 71.6227 8.98117 70.593 11.5554L60.3248 37.1832H56.8925L49 18.4997C50 18.4997 49.5475 18.9982 49 18.4997C50 18.4997 50.5 18.4997 53 18.4997L56.2346 25.6564Z" fill="white" />
+          </svg>
+        </div>
+        <div class="col-12 col-lg-6 arrow">
+          <button type="button" id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Scroll to top" title="Scroll to top">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.5965 22.4297L16.6792 26.1389C16.4018 26.4189 15.0037 27.7486 13.6055 26.4189C12.2072 25.0891 13.6054 23.7594 14.0715 23.3162L19.6644 17.9973C21.0626 16.6676 22.9269 16.6676 24.3252 17.9973C26.7017 20.2573 28.7905 22.348 29.918 23.3162C30.4343 23.7594 31.7823 25.0892 30.3841 26.4189C28.9859 27.7486 27.5876 26.4189 27.1216 25.9756L23.393 22.4297" stroke="white" /><circle cx="22" cy="22" r="21.5" stroke="white" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 d-none d-lg-block"></div>
+        <div class="col-12 col-lg-8"><div class="top-letters-museum">Museum Info</div></div>
+      </div>
+      <div class="row info">
+        <div class="col-12 col-lg-6 main">
+          <div class="inner-line"><div class="top-letters">Contact</div>
+            <a class="up contact-value" href="mailto:info@minm.com">info@minm.com</a>
+          </div>
+          <div class="inner-line"><div class="top-letters">Follow</div><div class="up">
+            <div class="little-icon" title="Instagram" aria-label="Instagram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6.67847C18 7.5 16.8727 8.11285 16 7C15.5 6.3624 15.6774 4.43215 18 4.47139C20.3226 4.51063 20.9677 6.3842 21 7.31608C21 7.93733 21 10.3177 21 14.8692C21 19.4207 17.7742 20.8529 16.1613 21C15.2903 21 12.5032 21 8.32258 21C4.14194 21 3.03226 17.7629 3 16.1444C3 15.5068 3 13.1232 3 8.68937C3 4.25559 5.96774 3.04905 7.45161 3H14.5161C12.2097 4.02997 7.31 6.06747 7.45161 11.0436C7.59677 16.1444 12.4076 17.4645 14.5161 15.3597C16.6246 13.2548 15.5 8.68937 12 8.68937" stroke="white" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+            <div class="little-icon" title="Facebook" aria-label="Facebook"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.89231 21V13.2538H7V9.94249H9.89231C9.89231 6.42419 9.89231 2.07805 17 3.17198V6.03983C13.9231 5.71462 13.6154 6.66071 13.6154 9.94249H17L16.3231 13.2538H13.6154V21" stroke="white" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+            <div class="little-icon" title="YouTube" aria-label="YouTube"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.5" y="4.5" width="23" height="15" rx="3.5" stroke="white" />
+              <g clip-path="url(#clip0)">
+                <path d="M10 14.625L10 16.2967C10 17.2252 11.1551 17.6524 11.7593 16.9475L15.4422 12.6508C15.7632 12.2763 15.7632 11.7237 15.4422 11.3492L11.7593 7.05247C11.1551 6.34757 10 6.77485 10 7.70326L10 11C10 11.5523 9.55228 12 9 12L-2 12" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                <rect x="9" y="11" width="2" height="2" fill="#222222" />
+                <line x1="10" y1="10.5" x2="10" y2="11.5" stroke="white" stroke-linecap="round" />
+              </g>
+              <defs><clipPath id="clip0"><rect width="10" height="21" fill="white" transform="translate(9 2)" /></clipPath></defs>
+            </svg></div>
+          </div></div>
+          <div class="inner-line"><div class="top-letters">Write</div><div class="up">
+            <div class="little-icon" title="Telegram" aria-label="Telegram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5469 12.638C12.3375 13.7944 11.7213 14.6466 11.2687 15.205C11.9205 15.6009 16.6293 18.4898 18.9828 20C19.2621 13.9086 20.444 7.46193 21 5C16.4379 6.15736 7.09914 10.0761 3 11.8909L8.0431 13.7944C9.55894 12.7925 13.3725 10.4133 16.5 8.91181" stroke="white" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+            <div class="little-icon" title="Messenger" aria-label="Messenger"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.0843 19.9471C9.99871 20.2498 10.9795 20.4141 12 20.4141C16.9706 20.4141 21 16.5159 21 11.7071C21 10.2714 20.8049 9.20008 20.1688 8.00625L14.0882 14.7172L10.413 12.0909L6.20534 15.3232L10.2042 8.69697L13.7123 11.2828L19.1223 6.375C17.4795 4.26947 14.9369 3 12 3C7.02944 3 3 6.89829 3 11.7071C3 14.2348 4.11337 16.511 5.89155 18.1016L6.20534 21" stroke="white" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+            <div class="little-icon" title="WhatsApp" aria-label="WhatsApp"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.75185 6.52361C3.68367 7.53066 2.06003 10.8623 4.11094 16.1326L3 21L7.27274 19.4894C10.1782 20.7482 16.1173 21.4616 19.4928 16.4263C22.6538 11.7108 20.3155 6.90123 17.3137 4.67733C15.2537 3.15123 11.5198 1.94151 6.80273 4.42557C6.34698 6.46765 6.2131 11.0637 9.49456 13.9506C13.5964 17.5592 16.8437 15.7969 17.5273 14.5381L14.7073 12.9016L13.2973 14.1604C12.2576 13.7968 10.0415 12.6498 9.49456 10.9714L10.4346 9.7126L9.23819 6.90124C8.9391 6.98516 8.2341 7.26629 7.80683 7.71947" stroke="white" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          </div></div>
+          <div class="us-rotate">us</div>
+        </div>
+        <div class="col-12 col-lg-3">
+          <a href="#" class="rotated">my account</a>
+        </div>
+        <div class="col-12 col-lg-3 additional">
+          <ul class="footer-menu">
+            <li><a href="{{ url_for('index') }}" class="small-letters">About</a></li>
+            <li><a href="{{ url_for('index') }}#art" class="small-letters">Art</a></li>
+            <li><a href="{{ url_for('index') }}#exhibitions" class="small-letters">Exhibitions</a></li>
+            <li><a href="{{ url_for('index') }}#events" class="small-letters">Event</a></li>
+            <li><a href="{{ url_for('index') }}#future" class="small-letters">In Future</a></li>
+            <li><a href="{{ url_for('index') }}#archive" class="small-letters">Archive</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row last-line">
+        <div class="col-12 col-lg-4 left">Study project • Yandex.Praktikum</div>
+        <div class="col-12 col-lg-4 center"><a href="#">Privacy Policy?</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#">Use of cookies</a></div>
+        <div class="col-12 col-lg-4 right">&copy;2026, The Museum of Minimalism</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    var scrollTopBtn = document.getElementById('scroll-to-top-btn');
+    if (!scrollTopBtn) return;
+    scrollTopBtn.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    var menuBtn = document.getElementById('menu-toggle-btn');
+    var menuDropdown = document.getElementById('menu-dropdown');
+    if (!menuBtn || !menuDropdown) return;
+
+    function closeMenu(){
+      menuDropdown.classList.remove('open');
+      menuBtn.classList.remove('active');
+    }
+    function openMenu(){
+      menuDropdown.classList.add('open');
+      menuBtn.classList.add('active');
+    }
+
+    menuBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (menuDropdown.classList.contains('open')) { closeMenu(); } else { openMenu(); }
+    });
+    menuDropdown.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('click', function(e){
+      if (!menuDropdown.contains(e.target) && e.target !== menuBtn) closeMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeMenu();
+    });
+  })();
+  </script>
+
+  <script>
+  window.SEARCH_INDEX = {{ search_index|tojson }};
+  (function(){
+    var toggleBtn = document.getElementById('search-toggle-btn');
+    var overlay = document.getElementById('search-overlay');
+    var closeBtn = document.getElementById('search-close-btn');
+    var input = document.getElementById('search-input');
+    var results = document.getElementById('search-results');
+    if (!toggleBtn || !overlay) return;
+
+    function openSearch(){
+      overlay.classList.add('open');
+      document.body.classList.add('search-lock');
+      setTimeout(function(){ input.focus(); }, 50);
+    }
+    function closeSearch(){
+      overlay.classList.remove('open');
+      document.body.classList.remove('search-lock');
+      input.value = '';
+      renderResults('');
+    }
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+    function renderResults(query){
+      var q = query.trim().toLowerCase();
+      results.innerHTML = '';
+      if (!q) {
+        results.innerHTML = '<div class="search-hint">Start typing to search the museum…</div>';
+        return;
+      }
+      var matches = (window.SEARCH_INDEX || []).filter(function(item){
+        return (item.title + ' ' + (item.subtitle || '')).toLowerCase().indexOf(q) !== -1;
+      }).slice(0, 8);
+      if (!matches.length) {
+        results.innerHTML = '<div class="search-hint">No results for &ldquo;' + escapeHtml(query) + '&rdquo;</div>';
+        return;
+      }
+      matches.forEach(function(item){
+        var a = document.createElement('a');
+        a.href = item.url;
+        a.className = 'search-result';
+        a.innerHTML = '<span class="search-result-type">' + escapeHtml(item.type) + '</span>' +
+                      '<span class="search-result-title">' + escapeHtml(item.title) + '</span>' +
+                      (item.subtitle ? '<span class="search-result-sub">' + escapeHtml(item.subtitle) + '</span>' : '');
+        results.appendChild(a);
+      });
+    }
+
+    toggleBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (overlay.classList.contains('open')) { closeSearch(); } else { openSearch(); }
+    });
+    closeBtn.addEventListener('click', closeSearch);
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closeSearch();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeSearch();
+    });
+    input.addEventListener('input', function(){ renderResults(input.value); });
+    input.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') {
+        var first = results.querySelector('.search-result');
+        if (first) window.location.href = first.getAttribute('href');
+      }
+    });
+  })();
+  </script>
+
+  <script src="{{ url_for('static', filename='js/reveal.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

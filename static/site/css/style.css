@@ -1,0 +1,1968 @@
+/******* -------------- ОБЩИЕ СВОЙСТВА (начало) -------------- *******/
+body {
+	background-color: #FFFFFF;
+	font-family: 'Roboto', sans-serif;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.logo {
+	width: 77px;
+	height: 37px;
+}
+.bcg-promo {
+
+	position: absolute;
+	top: -40px;
+	right: -80px;
+}
+
+/* -------------- "Живой" hero: idle-анимация декоративной композиции
+   (начало) --------------
+   Promo_main.svg — цельная картинка (квадраты + шар одним файлом), поэтому
+   отдельные фигуры внутри не анимировать — вместо этого медленное
+   "дыхание" всей композиции целиком (scale + сдвиг вверх-вниз). Амплитуда
+   и период подобраны так, чтобы движение уже читалось глазом (первая
+   версия — 9s/10px/1.015 — оказалась настолько плавной, что выглядела как
+   полное отсутствие анимации). Отключается при prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+	.bcg-promo {
+		animation: heroBreathe 6s ease-in-out infinite;
+		transform-origin: center;
+		will-change: transform;
+	}
+}
+@keyframes heroBreathe {
+	0%, 100% { transform: translateY(0) scale(1); }
+	50% { transform: translateY(-22px) scale(1.035); }
+}
+/* -------------- "Живой" hero (конец) -------------- */
+
+/* -------------- КНОПКА CTA (начало) -------------- */
+.button {
+	display: inline-block;
+	
+	position: relative;
+	margin-right: 0;
+	padding: 13px 50px;
+	
+	font-family: 'Roboto', sans-serif;
+	text-decoration: none;
+	font-size: 24px;
+	font-weight: 200;
+	color: #FFFFFF; 
+	
+	border-radius: 20px;
+	
+	background-color: #9D7875;
+}
+
+.button:hover {
+	color: #222; 
+	background-color: #fff;
+	box-shadow: 2px 5px 10px 0px rgba(34, 34, 34, .2);
+	border: none;
+}
+
+.button:active {
+	background-color: #222222;
+	color: #fff;
+	box-shadow: none;
+}
+
+/* Лёгкий "отклик" именно у "Read more" (не у всех .button — Pay/Subscribe/
+   See all и т.п. это не задевает): едва заметный подъём при наведении,
+   поверх уже существующей смены цвета в .button:hover. */
+@media (prefers-reduced-motion: no-preference) {
+	.read-more-link {
+		transition: transform .2s ease, background-color .25s, color .25s, box-shadow .25s;
+	}
+	.read-more-link:hover {
+		transform: translateY(-3px);
+	}
+}
+
+.button::before {
+	box-sizing: border-box;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	
+	display: inline-block;
+	content: "";
+			 	}
+				 
+/* -------------- КНОПКА CTA (конец) -------------- */
+
+
+/******* -------------- ОБЩИЕ СВОЙСТВА (конец) -------------- *******/
+
+
+/******* -------------- HEADER (начало) -------------- *******/
+.header.container {
+	padding: 40px 0 0;
+	position: relative;
+	
+}
+
+.header-menu {
+	list-style-type: none;
+	margin-bottom: 0;
+	padding-left: 0;
+}
+
+
+.header-menu-link {
+	font-size: 20px;
+	font-weight: 200;
+	line-height: 100%;
+	color: #222;
+	transition: all 0.25s;
+}
+
+.header-menu-link:hover {
+	color: rgba(85, 84, 82, 0.6);
+}
+
+.burger-menu,
+.search {
+	width: 24px;
+	height: 24px;
+	border: none;
+	background-color: transparent;
+}
+
+button.burger-menu {
+	background-image: url(../img/Icon=menu.svg);
+}
+button.search{
+	background-image: url(../img/search.svg);
+}
+/* .header-burger::before,
+.header-burger::after {
+	position: absolute;
+	left: 0;
+
+	width: 100%;
+	height: 2px;
+	
+	content: "";
+	background-color: black;
+} */
+
+.header-burger::before {
+	top: 0;
+}
+
+.header-burger::after {
+	bottom: 0;
+}
+
+.header-burger span {
+	position: absolute;
+	left: 0;
+	top: 9px;
+
+	width: 100%;
+	height: 2px;
+
+	background-color: black;
+}
+/******* -------------- HEADER (конец) -------------- *******/
+
+
+/******* -------------- Секция PROMO (начало) -------------- *******/
+.promo .container {
+	position: relative; 
+	padding-top: 60px;
+
+	background-image: url(../img/decor_mini.svg);
+	background-repeat: no-repeat;
+	background-position-x: left;
+	background-position-y: 83px;
+}
+
+/* -------------- "Живой" hero: появление заголовка по очереди (начало) --
+   Прямые дети .promo-content (Museum / Minimalism / текст / кнопка /
+   соцсети) поочерёдно проявляются и слегка "всплывают" при загрузке
+   страницы — задержки нарастают по порядку чтения. При
+   prefers-reduced-motion элементы сразу видны без анимации. */
+@media (prefers-reduced-motion: no-preference) {
+	.promo-content > div {
+		opacity: 0;
+		animation: heroFadeUp .7s cubic-bezier(.22,.61,.36,1) forwards;
+	}
+	.promo-content > div:nth-child(1) { animation-delay: .05s; }
+	.promo-content > div:nth-child(2) { animation-delay: .18s; }
+	.promo-content > div:nth-child(3) { animation-delay: .34s; }
+	.promo-content > div:nth-child(4) { animation-delay: .48s; }
+	.promo-content > div:nth-child(5) { animation-delay: .6s; }
+}
+@keyframes heroFadeUp {
+	from { opacity: 0; transform: translateY(24px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+/* -------------- "Живой" hero: появление заголовка (конец) -------------- */
+
+.promo-content h1 {
+	margin-top: -22px;
+	margin-left: 14px;
+	font-family: 'Roboto', sans-serif;
+	font-size: 140px;
+	font-weight: 300;
+	letter-spacing: -2.8px;
+	color: #222;
+	
+
+	z-index: 4;
+}
+
+.promo-content h4 {
+	margin-top: 175px;
+	margin-left: 22px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 40px;
+	font-weight: 300;
+	line-height: 100%;
+	color: #222;
+	letter-spacing: 0.8px;
+}
+
+.promo-content p {
+	margin:-8px 22px 68px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	line-height: 140%;
+	color: #222;
+}
+
+
+.button_type_promo {
+	margin-left: 38px;
+	margin-bottom:200px ;
+}
+
+.button_type_transparent {
+	color: #222;
+	background-color: transparent;
+	border: 1px solid #222;
+	padding: 8px 36px;
+	
+}
+.facebook-promo,
+.instagram-promo,
+.youtube-promo {
+	width: 24px;
+	height: 24px;
+	border: none;
+	background-color: transparent;
+	margin-left: 22px;
+	transition: transform .15s ease;
+	}
+
+.facebook-promo:hover,
+.instagram-promo:hover,
+.youtube-promo:hover {
+	transform: translateY(-2px);
+	}
+
+.soc-seti {
+	margin-top: -74px;
+}
+button.facebook-promo {
+	background-image: url(../img/Facebook_promo.svg);
+}
+button.instagram-promo{
+	background-image: url(../img/Instagram_promo.svg);
+}
+button.youtube-promo{
+	background-image: url(../img/Icon_youtube_promo.svg);
+}
+
+/******* -------------- Секция PROMO (конец) -------------- *******/
+
+.section{
+	margin-bottom: 152px;
+}
+
+
+
+/******* -------------- PREMIER PROJECT (начало) -------------- *******/
+
+.PP p{
+	margin-top: -25px;
+	margin-left: 200px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 32px;
+	font-weight: 300;
+	line-height: 100%;
+	color: #222;
+	
+}
+
+.avtor p {
+	margin-top: 16px;
+	margin-left: 0px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 100%;
+	color: #222;
+}
+
+.about-avtor p{
+	margin-top: 8px;
+	margin-left: 0px;
+	margin-bottom: 4px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #222;
+}
+
+.about_PP_avtor{
+	max-width: 50%;
+}
+
+.data-PP p{
+	margin-top: 8px;
+	margin-left: 0px;
+	margin-bottom: 4px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 140%;
+	color: #222;
+	
+}
+
+.premier-text h5{
+	margin-top: 310px;
+	margin-left: 0px;
+	margin-bottom: 4px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 38px;
+	font-weight: 600;
+	line-height: 110%;
+	color: #222;
+}
+
+.about-exhibition {
+	margin-top: 32px;
+	margin-left: 0px;
+	margin-bottom: 68px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #222;
+	max-width: 83%;
+}
+
+.PPseq {
+	margin-left: 60px;
+}
+
+/******* -------------- PREMIER PROJECT (конец) -------------- *******/
+
+
+/******* -------------- Секция EVENT (начало) -------------- *******/
+.razdelitel {
+	position: relative; 
+	padding-top: 0;
+
+	background-image: url(../img/Razdelitel\ event.svg);
+	background-repeat: no-repeat;
+	background-position-x: left;
+	background-position-y: 0;
+	margin-bottom: 100px;
+}
+
+	.razdelitel h3{
+		margin-top: -10px;
+		margin-left: 0;
+		margin-bottom: 0px;
+		font-family: "Roboto", 'Tahoma', sans-serif;
+		font-size: 56px;
+		font-weight: 600;
+		line-height: 100%;
+		color: #222;
+	}
+
+
+
+.japanese-content {
+	position: relative; 
+	padding-top: 0;
+
+	background-image: url(../img/Line\ 586.svg);
+	background-repeat: no-repeat;
+	background-position-x: left;
+	background-position-y: 0;
+}
+
+.japanese-word p {
+	margin-top: 0px;
+	margin-left: 8px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 60px;
+	font-weight: 700;
+	line-height: 140%;
+	color: rgba(85, 84, 82, 0.6);
+}
+
+.j-data{
+	margin-top: 234px;
+	margin-bottom: 100px;
+}
+
+.japanese-data p{
+	margin-left: 8px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #222;
+}
+
+.japanese-text h6{
+	margin-top: 324px;
+	margin-left: 0;
+	margin-bottom: 24px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #555452;
+}
+
+	.about-japanese {
+		margin-top: 0;
+		margin-left: 0px;
+		margin-bottom: 68px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 20px;
+		font-weight: 400;
+		line-height: 140%;
+		color: #222;
+
+	}
+
+
+	.about-cinema{
+		max-width: 40%;
+		margin-top: 80px;
+		margin-bottom: -12px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 20px;
+		font-weight: 400;
+		line-height: 140%;
+		color: #555452;
+
+	}
+
+.d-lives {
+	margin-top: 12px;
+	
+}
+
+.data-lives {
+	
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #222;
+}
+
+.lives-text h6 {
+	text-align: right;
+	margin-top: 160px;
+	margin-right: 16px;
+	margin-bottom: 24px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #555452;
+}
+
+.about-live {
+	text-align: right;
+	margin-right: 16px;
+	margin-bottom: 68px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 140%;
+	color: #222;
+	max-width: 70%;
+
+}
+
+.img-cinema h5{
+	text-align: right;
+	margin-top: 0px;
+	margin-bottom: 40px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 38px;
+	font-weight: 400;
+	line-height: 100%;
+	color: #222;
+}
+
+.live-btn {
+	margin-top: 68px;
+}
+
+.botton_type_pravo {
+	margin-right: 16px;
+}
+
+/******* -------------- Секция EVENT (конец) -------------- *******/
+
+
+/******* -------------- Секции EXHIBITION / LISTEN / ARCHIVE (начало) --------
+   Добавлены сверх исходного клона milamiss/Online-museum — эти секции есть
+   в присланном макете (1.pdf, и десктопная, и мобильная версии), но
+   отсутствуют на статичном референс-сайте, с которого клонирована вёрстка
+   остальной страницы. -------------------------------------------------- */
+
+/* В 1.pdf короткая линия-заставка перед "Exhibition"/"Listen" уходит
+   левее обычного .container (почти до края страницы), НО сам текст
+   заголовка при этом стоит вровень с контентом секции ниже (карточками) —
+   т.е. эффект "нового параграфа" сохраняется, а линия просто торчит
+   слева как декоративный штрих. Сдвигаем весь блок влево на ширину
+   линии+отступ (160+35=195px), тогда после этого сдвига текст возвращается
+   ровно на левый край .container. */
+.section-divider-heading {
+	display: flex;
+	align-items: center;
+	gap: 35px;
+	margin-bottom: 28px;
+	margin-left: -195px;
+}
+/* Поднять линию+"Listen" на 5мм (~19px при 96dpi) выше исходного места. */
+#future .section-divider-heading {
+	margin-top: -19px;
+}
+.section-divider-heading::before {
+	content: "";
+	flex: none;
+	width: 160px;
+	height: 1px;
+	background: #d9d2c9;
+}
+.section-divider-heading h3 {
+	margin: 0;
+	white-space: nowrap;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 40px;
+	font-weight: 600;
+	color: #222;
+}
+
+/* ---- Заголовок секции с линией справа (Exhibition, Listen) ---- */
+/* В 1.pdf справа от заголовка ("Exhibition", "Listen") есть декоративная
+   линия на уровне заголовка. Измерено напрямую по 1.pdf (зум 1.5x): линия
+   занимает ровно те же координаты x:1921..2159px у ОБОИХ заголовков —
+   длина 238 image-px = 158.7px (≈160px, как и у линии слева от текста),
+   прижата к правому краю. Поэтому — фиксированная ширина + margin-left:auto,
+   а не flex:1 (тянулась на всю ширину контейнера — заметно длиннее макета). */
+.section-header-row {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	margin-bottom: 28px;
+}
+.section-header-row .section-divider-heading {
+	margin-bottom: 0;
+	flex: none;
+}
+.section-header-line {
+	flex: none;
+	width: 160px;
+	height: 1px;
+	margin-left: auto;
+	background: #d9d2c9;
+}
+.exhibition-intro-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 24px;
+}
+.exhibition-interactions {
+	display: flex;
+	flex: none;
+	gap: 10px;
+	margin-top: 4px;
+}
+.exhibition-interaction-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	flex: none;
+	border: none;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 6px 16px rgba(34, 34, 34, 0.12);
+	cursor: pointer;
+	transition: transform .15s, box-shadow .15s;
+}
+.exhibition-interaction-icon:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px rgba(34, 34, 34, 0.16);
+}
+.exhibition-list-intro {
+	max-width: 640px;
+	margin-bottom: 40px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	line-height: 140%;
+	color: #222;
+}
+/* Точная композиция как в 1.pdf измерена по пикселям на самом макете
+   (desktop_page1.png, зум 1.5x): Nominal — 0%..52.85% ширины ряда;
+   разрыв 52.85%..65.5%; Perfection — 65.5%..100%, растянута на оба ряда
+   по вертикали (но не "по стрейчу" — center, т.к. в макете её высота
+   меньше суммарной высоты Nominal+разрыв+Conciseness); Conciseness —
+   9%..61.5%, ниже и со сдвигом вправо относительно Nominal. Обычная
+   equal-fr грид-сетка с общим gap искажает эти пропорции (gap "съедается"
+   внутрь span'а каждой карточки) — поэтому раскладка на явных
+   непрямоугольных fr-колонках, без column-gap, а нужные разрывы это
+   просто незанятые колонки. */
+.exhibition-cards {
+	position: relative;
+	display: grid;
+	grid-template-columns: 9fr 43.85fr 8.65fr 4fr 34.5fr;
+	column-gap: 0;
+	row-gap: 200px;
+	grid-auto-rows: min-content;
+	margin-bottom: 40px;
+}
+/* Декоративные "плашки" в 1.pdf: одна за левым краем карточки Nominal,
+   две (наслаиваясь друг на друга) за правым краем карточки Perfection —
+   размеры/положение измерены по макету (desktop_page1.png, зум 1.5x).
+   Вынесены из грид-раскладки (position:absolute, без grid-column), стоят
+   первыми в DOM, поэтому карточки с непрозрачным фоном рисуются поверх. */
+.exhibition-peek {
+	position: absolute;
+	border-radius: 32px;
+	background: #DFD1CC;
+	box-shadow: 0 20px 40px rgba(34,34,34,.10);
+	pointer-events: none;
+}
+.exhibition-peek--nominal {
+	left: -80px;
+	top: 243px;
+	width: 153px;
+	height: 295px;
+}
+/* Между розовой плашкой и карточкой Nominal в макете виден белый
+   скруглённый "ободок" (ещё один слой карточки-подложки) — почти
+   полностью скрыт за Nominal, наружу торчит только нижний правый угол. */
+.exhibition-peek--nominal-white {
+	left: -60px;
+	top: 175px;
+	width: 167px;
+	height: 400px;
+	background: #fff;
+	box-shadow: 0 20px 40px rgba(34,34,34,.08);
+}
+/* top отсчитывается от .exhibition-cards (весь грид), а не от Perfection —
+   Perfection стоит по центру грид-области (align-self:center), поэтому
+   к измеренному по макету смещению внутри самой Perfection (относительно
+   её верхнего края) прибавлен её текущий top относительно грида (212.5px
+   при высотах карточек 420/620/425 и row-gap 200px). */
+.exhibition-peek--perfection-white {
+	right: -60px;
+	top: 546px;
+	width: 165px;
+	height: 390px;
+	background: #fff;
+	box-shadow: 0 20px 40px rgba(34,34,34,.08);
+}
+.exhibition-peek--perfection-a {
+	right: -80px;
+	top: 614px;
+	width: 151px;
+	height: 285px;
+}
+/* Высота карточек в 1.pdf фиксированная (не подстраивается под длину
+   текста) — измерено по макету (desktop_page1.png, зум 1.5x): Nominal
+   420px, Perfection 620px, Conciseness 425px. Без явной высоты карточки
+   сжимались под контент (просевший .exhibition-card-body p{flex:1} и так
+   уже тянется, заполняя лишнее место). */
+.exhibition-card--split-left {
+	grid-column: 1 / 3;
+	grid-row: 1;
+	height: 420px;
+}
+.exhibition-card--split-right {
+	grid-column: 5 / 6;
+	grid-row: 1 / span 2;
+	align-self: center;
+	height: 620px;
+}
+.exhibition-card--stacked {
+	grid-column: 2 / 4;
+	grid-row: 2;
+	height: 425px;
+}
+.exhibition-card {
+	position: relative;
+	border-radius: 20px;
+	overflow: hidden;
+	background: #F1EAE6;
+}
+.exhibition-card-row {
+	display: flex;
+	height: 100%;
+}
+.exhibition-card--split-right .exhibition-card-row {
+	flex-direction: row-reverse;
+}
+.exhibition-card-media {
+	position: relative;
+	flex: 0 0 40%;
+	background-size: cover;
+	background-position: center;
+	background-color: #2c2c2c;
+}
+/* -------------- Микро-интерактивность карточек (начало) --------------
+   .exhibition-card уже имеет overflow:hidden (скруглённые углы карточки) —
+   этого достаточно, чтобы безопасно увеличивать фон при наведении на всю
+   карточку, не задевая соседние элементы (transform не влияет на layout). */
+@media (prefers-reduced-motion: no-preference) {
+	.exhibition-card-media {
+		transition: transform .5s ease;
+	}
+	.exhibition-card:hover .exhibition-card-media {
+		transform: scale(1.06);
+	}
+}
+/* -------------- Микро-интерактивность карточек (конец) -------------- */
+
+/* -------------- Scroll-reveal контента (начало) --------------
+   Класс/показ управляются из static/js/reveal.js (IntersectionObserver):
+   если у пользователя prefers-reduced-motion:reduce, скрипт вообще не
+   добавляет класс .reveal — элементы сразу в обычном, финальном состоянии,
+   без этой CSS-декларации. */
+.reveal {
+	opacity: 0;
+	transform: translateY(28px);
+	transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.reveal-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+/* -------------- Scroll-reveal контента (конец) -------------- */
+
+/* Conciseness (stacked) в макете — НЕ картинка на всю ширину сверху: это
+   картинка ~69% ширины рядом с заголовком/автором (как у Nominal/Perfection,
+   только выше и шире), а параграф с датой/кнопкой уже НИЖЕ этого ряда на
+   всю ширину карточки (картинка там короче высоты карточки). */
+.exhibition-card--stacked .exhibition-card-top {
+	display: flex;
+}
+.exhibition-card--stacked .exhibition-card-media {
+	flex: 0 0 69%;
+	aspect-ratio: 7/4;
+}
+.exhibition-card--stacked .exhibition-card-head {
+	flex: 1;
+	/* 56px было под старый font-size:24px заголовка; после увеличения
+	   до 40px (+19.2px box-height) отступ увеличен на ту же величину. */
+	padding: 75px 24px 0;
+}
+/* По 1.pdf кнопка воспроизведения стоит в самом верхнем углу картинки:
+   слева у Nominal и Conciseness, справа у Perfection. Заголовки всех трёх
+   карточек теперь сдвинуты вправо от левого края (см. позиционирование
+   .exhibition-card-title выше), так что верхний угол свободен и кнопка
+   больше не пересекается с текстом. */
+.exhibition-card-play {
+	position: absolute;
+	top: 18px;
+	left: 18px;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: 1px solid rgba(255,255,255,.7);
+	background: transparent;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 11px;
+	padding: 0;
+	cursor: pointer;
+	transition: background .15s, transform .15s;
+	z-index: 1;
+}
+.exhibition-card-play:hover {
+	background: rgba(255,255,255,.2);
+	transform: scale(1.06);
+}
+
+/* Модалка воспроизведения видео (кнопка ▶ на карточках выставок). */
+.video-modal {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(20, 18, 17, 0.85);
+	z-index: 600;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 20px;
+}
+.video-modal.open {
+	display: flex;
+}
+.video-modal-box {
+	position: relative;
+	width: 100%;
+	max-width: 960px;
+}
+.video-modal-box video {
+	width: 100%;
+	max-height: 80vh;
+	border-radius: 12px;
+	background: #000;
+	display: block;
+}
+.video-modal-error {
+	display: none;
+	margin: 0;
+	padding: 60px 20px;
+	text-align: center;
+	color: #fff;
+	background: #222;
+	border-radius: 12px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+}
+.video-modal-close {
+	position: absolute;
+	top: -44px;
+	right: 0;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: 1px solid rgba(255,255,255,.7);
+	background: transparent;
+	color: #fff;
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+}
+body.video-modal-lock {
+	overflow: hidden;
+}
+.exhibition-card--split-right .exhibition-card-play {
+	left: auto;
+	right: 18px;
+}
+/* Заголовок карточки "впечатан" одновременно в картинку и в светлый фон:
+   два одинаковых текста наложены друг на друга, каждый обрезан clip-path
+   по границе картинка/фон — светлый видно только над фото, тёмный только
+   над карточкой, без риска mix-blend-mode (в этом проекте он уже один раз
+   рендерился невидимым в похожей ситуации). */
+.exhibition-card-title-wrap {
+	position: absolute;
+	top: 22px;
+	left: 0;
+	right: 0;
+	padding: 0 24px;
+}
+.exhibition-card-title {
+	position: absolute;
+	top: 0;
+	left: 24px;
+	right: 24px;
+	margin: 0;
+	font-family: "Roboto", sans-serif;
+	/* Высота букв измерена напрямую по 1.pdf (exhibition_full.png, зум 1.5x):
+	   капхайт буквы "N"/"M" в слове NOMINAL — 42 image-px = 28 CSS-px.
+	   В нашем шрифте (Roboto 700) такой капхайт даёт font-size 40px
+	   (проверено через canvas actualBoundingBoxAscent/Descent). */
+	font-size: 40px;
+	font-weight: 700;
+	letter-spacing: .5px;
+	white-space: nowrap;
+}
+.exhibition-card-title.is-light { color: #fff; }
+.exhibition-card-title.is-dark { color: #222; }
+/* Точные координаты сверены по 1.pdf (desktop_page1.png, зум 1.5x):
+   в макете слово "NOMINAL" начинается НЕ у левого края карточки, а в
+   189px от него (буква "N"), заканчивается в 368px ("L"), а граница
+   картинка/кремовый фон — в 252px. Но шрифт макета и наш рендерятся с
+   разными пропорциями, поэтому позиция вычислена от РЕАЛЬНОЙ границы
+   картинка/крем в нашей карточке (40% от 665.9px = 266.36px) минус
+   фактическая ширина "NO" в нашем шрифте при font-size:40px (56.81px):
+   266.36 - 56.81 ≈ 210px, клип — по границе O/M (57px от начала блока,
+   между шириной "NO"=56.81 и "NOM"=92.33). */
+.exhibition-card--split-left .exhibition-card-title {
+	left: 210px;
+	right: 24px;
+}
+.exhibition-card--split-left .exhibition-card-title.is-light { clip-path: inset(0 calc(100% - 57px) 0 0); }
+.exhibition-card--split-left .exhibition-card-title.is-dark { clip-path: inset(0 0 0 57px); }
+/* PERFECTION: измерено по 1.pdf так же, как NOMINAL — "PERFECT" (тёмный)
+   заканчивается почти точно на границе картинка/крем в макете, поэтому
+   позиция вычислена от РЕАЛЬНОЙ границы в нашей карточке (260.81px) минус
+   фактическая ширина "PERFECT" в нашем шрифте при font-size:40px (172.25px):
+   260.81 - 172.25 ≈ 89px, клип — по границе T/I (173px, между PERFECT=172.25
+   и PERFECTI=184.46). */
+.exhibition-card--split-right .exhibition-card-title {
+	left: 89px;
+	right: 24px;
+}
+.exhibition-card--split-right .exhibition-card-title.is-dark { clip-path: inset(0 calc(100% - 173px) 0 0); }
+.exhibition-card--split-right .exhibition-card-title.is-light { clip-path: inset(0 0 0 173px); }
+.exhibition-card--stacked .exhibition-card-title-wrap {
+	top: 18px;
+}
+/* CONCISENESS: та же техника — "CONCISE" (светлый) заканчивается почти
+   точно на границе картинка/крем (69% от карточки = 456.42px в нашей
+   вёрстке) минус фактическая ширина "CONCISE" в нашем шрифте (170.48px):
+   456.42 - 170.48 ≈ 286px, клип — по границе E/N (171px, между CONCISE=170.48
+   и CONCISEN=199.21). */
+.exhibition-card--stacked .exhibition-card-title {
+	left: 286px;
+	right: 24px;
+}
+.exhibition-card--stacked .exhibition-card-title.is-light { clip-path: inset(0 calc(100% - 171px) 0 0); }
+.exhibition-card--stacked .exhibition-card-title.is-dark { clip-path: inset(0 0 0 171px); }
+/* Подчёркивание и имя художника — тоже почти целиком на кремовой стороне,
+   начинаются от той же границы картинка/фон (266px), тёмным/серым цветом
+   (как и было задумано для кремового фона). */
+.exhibition-card-underline--overlay {
+	/* Позиция и длина линии измерены напрямую по 1.pdf (nominal_title_crop):
+	   начало линии — 22.67px от начала слова (попадает на букву "O"),
+	   конец — 198px от начала слова (немного за букву "L"), при ширине
+	   слова в макете 192px. Пересчитано в пропорции ширины слова в нашем
+	   шрифте (183.13px при font-size:40px): начало 210+21.6≈231px,
+	   конец 210+188.9≈399px, ширина 168px.
+	   Отступ сверху: по 1.pdf от НИЖНЕГО КРАЯ БУКВ (не бокса!) до линии —
+	   18.67px. Нижний край букв (карточка-относительно) = wrap-top(22) +
+	   fontBoundingBoxAscent(38) = 60px (canvas-метрика шрифта: ascent 38 +
+	   descent 10 = ровно 48 = высота строки, половинного leading нет).
+	   60 + 18.67 ≈ 79px карточка-относительно; но этот элемент лежит ВНУТРИ
+	   .exhibition-card-title-wrap (у неё самой position:absolute, top:22px) —
+	   она и есть containing block, поэтому в её системе координат нужно
+	   79 - 22 = 57px. */
+	position: absolute;
+	top: 57px;
+	left: 231px;
+	height: 1px;
+	background: #222;
+}
+/* Компаунд-селектор нужен для специфичности: у элемента есть оба класса
+   (.exhibition-card-underline и .exhibition-card-underline--overlay), а
+   правило .exhibition-card-underline { width: 130px } ниже по каскаду при
+   равной специфичности иначе перебивает ширину. */
+.exhibition-card-underline.exhibition-card-underline--overlay {
+	width: 168px;
+}
+.exhibition-card-artist--overlay {
+	/* Имя художника должно целиком лежать на кремовом фоне (в отличие от
+	   линии, которая намеренно заходит на серый) — сдвинуто за реальную
+	   границу картинка/крем (266.36px) с небольшим отступом, как у
+	   Jose Basso в Conciseness: 266.36 + 7 ≈ 273px.
+	   Отступ сверху: от линии (79px карточка-относительно) + замеренный по
+	   макету зазор линия->имя художника (14.67px) ≈ 94px карточка-
+	   относительно; минус wrap-top(22px), т.к. containing block — сама
+	   .exhibition-card-title-wrap: 94 - 22 = 72px. */
+	position: absolute;
+	top: 72px;
+	left: 273px;
+	margin: 0;
+	color: #857f7c;
+}
+.exhibition-card-body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+	/* Подчёркивание+имя (Fashion) у Perfection теперь абсолютно
+	   спозиционированы поверх картинки/крема (см. ниже), как и у Nominal —
+	   параграфу больше нечего "обходить" в нормальном потоке, кроме самого
+	   заголовка + освобождённого места под них. Отступ = низ имени автора
+	   (116.5px) + зазор имя->параграф по макету (42.67px) ≈ 159px. */
+	padding-top: 159px;
+}
+/* На Nominal заголовок+подчёркивание+имя художника переехали единым
+   блоком в зону картинки (см. .exhibition-card-underline--overlay ниже) —
+   тексту в текстовой колонке больше нечего "обходить" сверху. */
+.exhibition-card-body--no-caption {
+	padding-top: 158px;
+}
+/* Короткая подчёркивающая линия между заголовком и именем автора/категории
+   (Dan Flavin / Fashion / Jose Basso в 1.pdf) — не на всю ширину карточки,
+   ширина и отступы сверху/снизу измерены по макету. */
+.exhibition-card-underline {
+	width: 130px;
+	height: 1px;
+	background: #222;
+	margin: 0 0 19px;
+}
+.exhibition-card-artist {
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	color: #857f7c;
+	margin-bottom: 10px;
+}
+.exhibition-card-body p {
+	/* Капхайт текста в 1.pdf замерен напрямую (буква "T"/"S"/"I" во всех
+	   3 карточках) — стабильно ~14px. В нашем шрифте (Open Sans 400) это
+	   даёт font-size:19px (было 15px), проверено через canvas
+	   actualBoundingBoxAscent/Descent. */
+	font-family: "Open Sans", sans-serif;
+	font-size: 19px;
+	line-height: 140%;
+	color: #4c4642;
+	flex: 1;
+}
+.exhibition-card-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 18px;
+}
+/* Perfection (split-right) — узкая текстовая колонка: дата и кнопка в один
+   ряд не помещаются, "Read more" переносится на две строки. В макете дата
+   идёт сразу после текста, а кнопка — отдельной строкой ниже, во всю
+   доступную ширину, без переноса. */
+.exhibition-card--split-right .exhibition-card-footer {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 14px;
+}
+.exhibition-card--split-right .exhibition-card-footer .button {
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+/* PERFECTION: подчёркивание и "Fashion" измерены по 1.pdf так же, как у
+   Nominal, и вынесены в абсолютное позиционирование (relative к .exhibition-card),
+   т.к. по макету линия заходит на границу "PERFECT"/"ION" почти на кремовой
+   стороне ближе к её концу — обычным паддингом внутри узкой (60%) текстовой
+   колонки такое не выразить. */
+.exhibition-card--split-right .exhibition-card-underline {
+	/* Отступ сверху пересчитан от нижнего края БУКВ (60px = wrap-top:22 +
+	   fontBoundingBoxAscent:38), а не от нижнего края бокса строки — по
+	   макету зазор буквы->линия здесь 20px: 60+20=80px. (Раньше ошибочно
+	   считали от нижнего края бокса — 70+30=100, что на 20px больше нужного.) */
+	position: absolute;
+	top: 80px;
+	left: 155px;
+	width: 121px;
+	margin: 0;
+}
+.exhibition-card--split-right .exhibition-card-artist {
+	/* От линии (80px) + зазор линия->имя автора по макету (13.3px) ≈ 94px. */
+	position: absolute;
+	top: 94px;
+	left: 156px;
+	margin: 0;
+	white-space: nowrap;
+}
+/* CONCISENESS: та же техника — линия и "Jose Basso" измерены по 1.pdf и
+   вынесены в абсолютное позиционирование (relative к .exhibition-card),
+   т.к. линия заходит на картинку до реальной границы картинка/крем
+   (456.42px), а .exhibition-card-head в разметке начинается ровно на этой
+   границе — обычным паддингом внутри head левее её не сдвинуть. */
+.exhibition-card--stacked .exhibition-card-underline {
+	/* Отступ сверху от нижнего края БУКВ (56px = wrap-top:18 +
+	   fontBoundingBoxAscent:38), зазор буквы->линия по макету 20px:
+	   56+20=76px. (Раньше ошибочно считали от нижнего края бокса — 66+20=86.) */
+	position: absolute;
+	top: 76px;
+	left: 428px;
+	width: 132px;
+	margin: 0;
+}
+.exhibition-card--stacked .exhibition-card-artist {
+	/* От линии (76px) + зазор линия->имя автора по макету (14.67px) ≈ 90px. */
+	position: absolute;
+	top: 90px;
+	left: 469px;
+	margin: 0;
+	white-space: nowrap;
+}
+.exhibition-card--stacked .exhibition-card-lower {
+	padding: 20px 24px 24px;
+	display: flex;
+	flex-direction: column;
+}
+.exhibition-card--stacked .exhibition-card-lower p {
+	font-family: "Open Sans", sans-serif;
+	font-size: 19px;
+	line-height: 140%;
+	color: #4c4642;
+}
+/* В 1.pdf дата под описанием — жирная и тёмная (не серая тонкая подпись,
+   как было раньше), а "Read more" заметно плотнее, чем обычные тонкие
+   (font-weight:200) кнопки сайта — правим только в карточках выставок,
+   остальные кнопки сайта клонированы 1:1 с оригинала и не трогаются. */
+.exhibition-card-date {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	color: #222;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.exhibition-card-date img {
+	width: 14px;
+	height: 14px;
+}
+.exhibition-card-footer .button {
+	padding: 10px 22px;
+	font-size: 15px;
+	font-weight: 500;
+}
+
+/* ---- Listen ---- */
+/* Ромб повёрнут на 45° и визуально выходит за пределы своего layout-блока
+   (см. .podcast-diamond-wrap) — без компенсации его реальный (видимый)
+   верхний край перекрывает заголовок "Listen". Добавляем margin-top, чтобы
+   видимый край ромба был на том же расстоянии (28px) от заголовка, что и
+   текст-интро от заголовка "Exhibition". */
+.podcast-row {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 40px;
+	flex-wrap: wrap;
+	margin-top: 90px;
+	margin-bottom: 28px;
+}
+.podcast-row audio {
+	display: none;
+}
+/* В 1.pdf это не просто залитый ромб с тенью, а "стопка" из двух ромбов
+   в толстой белой рамке (карточка со скруглёнными углами, повёрнутая на
+   45°): основной ромб спереди, второй чуть меньше и светлее выглядывает
+   слева-снизу, плюс две тонкие диагональные декоративные линии внутри
+   основного. Размеры измерены по макету (desktop_page1.png, зум 1.5x). */
+/* transform:rotate() не меняет коробку для layout — повёрнутый на 45°
+   квадрат 300x300 визуально выходит за свой блок на ~62px с каждой
+   стороны (300*sqrt2 ≈ 424 против 300), из-за чего до этой правки ромб
+   наслаивался на кнопку play. Добавляем это переполнение в margin-right. */
+.podcast-diamond-wrap {
+	position: relative;
+	flex-shrink: 0;
+	width: 300px;
+	height: 300px;
+	margin-right: 65px;
+}
+.podcast-diamond-wrap::before {
+	content: "";
+	position: absolute;
+	left: -100px;
+	top: 80px;
+	width: 210px;
+	height: 210px;
+	box-sizing: border-box;
+	background: #E7D3CD;
+	border: 14px solid #fff;
+	border-radius: 34px;
+	box-shadow: 0 14px 28px rgba(34,34,34,.10);
+	transform: rotate(45deg);
+	z-index: 0;
+}
+.podcast-diamond {
+	position: relative;
+	z-index: 1;
+	width: 300px;
+	height: 300px;
+	box-sizing: border-box;
+	background: #E7D3CD;
+	border: 20px solid #fff;
+	border-radius: 48px;
+	box-shadow: 0 20px 40px rgba(34,34,34,.12);
+	transform: rotate(45deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.podcast-diamond-line {
+	position: absolute;
+	height: 1px;
+	width: 120px;
+	background: #222;
+}
+.podcast-diamond-line--1 {
+	top: 55px;
+	right: 30px;
+}
+.podcast-diamond-line--2 {
+	bottom: 55px;
+	left: 30px;
+}
+.podcast-diamond-inner {
+	position: relative;
+	z-index: 1;
+	transform: rotate(-45deg);
+	text-align: center;
+}
+.podcast-diamond-inner p {
+	margin: 0;
+	font-family: "Roboto", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	color: #222;
+	line-height: 130%;
+}
+.podcast-diamond-underline {
+	width: 148px;
+	height: 1px;
+	background: #222;
+	margin: 10px auto;
+}
+.podcast-diamond-inner .podcast-label {
+	display: block;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	color: #857f7c;
+}
+.podcast-play,
+.podcast-download {
+	width: 44px;
+	height: 44px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 1px solid #d9d2c9;
+	background: #fff;
+	color: #222;
+	font-size: 14px;
+	text-decoration: none;
+	cursor: pointer;
+}
+/* Настоящий проигрыватель: два одинаковых набора полос (реальные пики
+   амплитуды из аудиофайла, static/js/podcast.js) друг над другом — серый
+   базовый слой и акцентный слой, который открывается через clip-path по
+   мере воспроизведения. Клик по полосам — перемотка (data-podcast-seek). */
+.podcast-waveform {
+	position: relative;
+	flex: 1;
+	min-width: 160px;
+	height: 32px;
+	cursor: pointer;
+}
+.podcast-waveform-bars {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	gap: 3px;
+}
+.podcast-waveform-bars span {
+	flex: 1;
+	min-height: 2px;
+	background: #d9d2c9;
+	border-radius: 1px;
+}
+.podcast-waveform-bars--accent {
+	clip-path: inset(0 100% 0 0);
+}
+.podcast-waveform-bars--accent span {
+	background: #9D7875;
+}
+.podcast-duration {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	color: #222;
+}
+.podcast-duration img {
+	width: 16px;
+	height: 16px;
+}
+/* В 1.pdf текст идёт не во всю ширину секции от левого края (под ромбом),
+   а с отступом слева, под волной проигрывателя — отступ равен ширине
+   ромба + отступы + кнопка play (те же значения, что в .podcast-row).
+   По вертикали текст тоже не "после" всего ряда (ромб — 300px, самый
+   высокий элемент ряда, обычный flow увёл бы текст далеко вниз под него) —
+   в макете текст стоит вплотную под волной, на 52px ниже её нижнего края,
+   independent от высоты ромба, поэтому позиционируем абсолютно. */
+.podcast-text {
+	position: absolute;
+	top: 218px;
+	left: 489px;
+	max-width: 560px;
+	margin: 0;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	line-height: 140%;
+	color: #222;
+}
+
+/* ---- Art Archive ---- */
+/* В 1.pdf заголовок лежит не прямо на розовой ленте, а на отдельной
+   светлой карточке, прижатой к левому краю (сама лента бесшовно бежит на
+   всю ширину экрана, скульптура-бублик выглядывает справа из-под
+   карточки) — размеры и пропорции измерены по макету. */
+/* По просьбе пользователя лента ограничена шириной контейнера (как у
+   остальных секций), а не тянется на всю ширину экрана, как в 1.pdf —
+   поэтому и сама лента, и плашка заголовка получили скругление со всех
+   сторон (а не только справа, как было при бликах в край экрана). */
+.archive-band {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 44px;
+	height: 249px;
+	border-radius: 20px;
+	background-color: #F3E7E1;
+	background-size: cover;
+	background-position: center right;
+}
+.archive-band-box {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 58.9%;
+	max-width: 742px;
+	height: 138px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	background: #F1EAE6;
+	border-radius: 20px;
+	padding: 0 40px;
+}
+.archive-band-title {
+	margin: 0;
+	font-family: "Roboto", sans-serif;
+	font-size: 50px;
+	font-weight: 700;
+	color: #222;
+}
+.archive-band-title span {
+	font-weight: 400;
+	color: #4c4642;
+}
+.archive-row {
+	position: relative;
+	display: flex;
+	gap: 40px;
+	margin-bottom: 34px;
+}
+/* Формат и размер как у "Japanese / Minimal / Design" в секции Event
+   (.japanese-word p) — тот же шрифт/размер/насыщенность/цвет, см. 1.pdf. */
+.archive-side-label {
+	flex-shrink: 0;
+	width: 220px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	font-size: 60px;
+	font-weight: 700;
+	line-height: 140%;
+	color: rgba(85, 84, 82, 0.6);
+	border-left: 2px solid #222;
+	padding-left: 20px;
+}
+/* В макете плитки Base unit / Mirrored Cubes / Spirit of the place лежат
+   не на белом фоне, а на светлой панели (тот же цвет, что и карточки
+   Exhibition) с большими боковыми отступами — размеры и паддинги измерены
+   по 1.pdf (desktop_page1.png, зум 1.5x). */
+.archive-cards-panel {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	background: #F1EAE6;
+	border-radius: 20px;
+	padding: 48px 119px;
+}
+/* Настоящая прокрутка между плитками (не просто статичная сетка): лента
+   на overflow-x + scroll-snap, стрелки (static/js/archive-carousel.js)
+   листают её на одну карточку. Скроллбар скрыт — прокрутка доступна и
+   свайпом/колесом, и кнопками. */
+.archive-cards {
+	display: flex;
+	gap: 20px;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.archive-cards::-webkit-scrollbar {
+	display: none;
+}
+/* По умолчанию (сейчас 3 плитки) карточки эластично делят всю ширину
+   панели — видно сразу все 3, скролл не нужен. min-width — задел под
+   будущие плитки: как только при добавлении новых карточек их доля
+   ужалась бы меньше 220px, они перестают сжиматься дальше и лента
+   переполняется — тогда включается прокрутка (archive-carousel.js). */
+.archive-card {
+	flex: 0 0 calc((100% - (var(--archive-count, 3) - 1) * 20px) / var(--archive-count, 3));
+	min-width: 220px;
+	scroll-snap-align: start;
+}
+/* Стрелки выровнены по бокам панели, по вертикальному центру — стандартный
+   вид карусели, кружок наполовину выступает за край панели. */
+.archive-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 1;
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 1px solid #d9d2c9;
+	background: #fff;
+	box-shadow: 0 8px 20px rgba(34,34,34,.10);
+	color: #222;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+}
+.archive-nav-prev {
+	left: 16px;
+}
+.archive-nav-next {
+	right: 16px;
+}
+/* background-image приходит инлайновым style на сам .archive-card-media
+   (из шаблона) — чтобы увеличивать картинку по hover БЕЗ выхода за рамку
+   карточки, рамка (overflow:hidden) и увеличиваемый слой должны быть
+   разными элементами. Переносим фон на ::before через background-image:
+   inherit (спецкейс CSS — псевдоэлемент подхватывает инлайновый background
+   родителя), а сам .archive-card-media остаётся неподвижной рамкой. */
+.archive-card-media {
+	position: relative;
+	aspect-ratio: 4/3;
+	background-color: #ded2c4;
+	margin-bottom: 14px;
+	overflow: hidden;
+}
+.archive-card-media::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: inherit;
+	background-size: cover;
+	background-position: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.archive-card-media::before {
+		transition: transform .5s ease;
+	}
+	.archive-card:hover .archive-card-media::before {
+		transform: scale(1.06);
+	}
+}
+.archive-card-date {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: #857f7c;
+	margin-bottom: 6px;
+}
+.archive-card h4 {
+	margin: 0 0 6px;
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #222;
+}
+.archive-card p {
+	margin: 0;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	line-height: 140%;
+	color: #4c4642;
+}
+
+/* -------------- IN FUTURE (начало) -------------- */
+.future-teaser-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+	margin-top: 36px;
+}
+/* Пока не объявлены реальные выставки (и их фото), карточка держится на
+   нейтральном градиенте — как только появится image, .future-teaser-card
+   получит инлайновый background-image и градиент просто станет невидим. */
+.future-teaser-card {
+	position: relative;
+	height: 360px;
+	border-radius: var(--radius-md, 16px);
+	overflow: hidden;
+	background: linear-gradient(135deg, #efe4dc, #d9c9ba);
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 26px;
+	isolation: isolate;
+}
+.future-teaser-card::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.55) 100%);
+}
+.future-teaser-card > * {
+	position: relative;
+	z-index: 2;
+}
+.future-teaser-eyebrow {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: #e7d9cf;
+	margin-bottom: 8px;
+}
+.future-teaser-card h4 {
+	font-family: "Roboto", sans-serif;
+	font-weight: 700;
+	font-size: 24px;
+	color: #fff;
+	margin: 0 0 18px;
+}
+.future-teaser-card .btn {
+	align-self: flex-start;
+	background: rgba(255,255,255,.12);
+	border-color: rgba(255,255,255,.5);
+	color: #fff;
+	backdrop-filter: blur(4px);
+}
+.future-teaser-card .btn:hover {
+	background: #fff;
+	color: #222;
+}
+/* -------------- IN FUTURE (конец) -------------- */
+
+@media (max-width: 991px) {
+	.exhibition-peek {
+		display: none;
+	}
+	/* Фиксированная высота карточек — под десктопную композицию (картинка
+	   и текст в ряд). На мобильном они складываются в колонку (картинка
+	   сверху, текст снизу) и всегда требуют больше места, поэтому высоту
+	   возвращаем к естественной под контент. */
+	.exhibition-card--split-left,
+	.exhibition-card--split-right,
+	.exhibition-card--stacked {
+		height: auto;
+	}
+	.archive-band {
+		height: auto;
+	}
+	.archive-band-box {
+		position: static;
+		width: 100%;
+		max-width: none;
+		height: auto;
+		border-radius: 0;
+		padding: 24px 20px;
+	}
+	.archive-band-title {
+		font-size: 28px;
+	}
+	.archive-row {
+		flex-direction: column;
+		gap: 20px;
+	}
+	.archive-side-label {
+		width: auto;
+		display: flex;
+		gap: 16px;
+		border-left: none;
+		border-bottom: 2px solid #222;
+		padding-left: 0;
+		padding-bottom: 12px;
+		font-size: 32px;
+	}
+	.archive-cards-panel {
+		padding: 24px;
+	}
+	.archive-card {
+		flex-basis: 100%;
+	}
+	.archive-nav {
+		width: 36px;
+		height: 36px;
+		font-size: 17px;
+	}
+	.archive-nav-prev {
+		left: 4px;
+	}
+	.archive-nav-next {
+		right: 4px;
+	}
+	.section-divider-heading {
+		margin-left: 0;
+	}
+	.section-divider-heading::before {
+		width: 40px;
+	}
+	.section-divider-heading h3 {
+		font-size: 28px;
+	}
+	.podcast-row {
+		gap: 20px;
+		margin-top: 65px;
+	}
+	.podcast-diamond-wrap {
+		width: 180px;
+		height: 180px;
+		margin-right: 40px;
+	}
+	.podcast-diamond-wrap::before {
+		left: -60px;
+		top: 48px;
+		width: 126px;
+		height: 126px;
+		border-width: 8px;
+		border-radius: 20px;
+	}
+	.podcast-diamond {
+		width: 180px;
+		height: 180px;
+		border-width: 12px;
+		border-radius: 29px;
+	}
+	.podcast-diamond-line {
+		width: 72px;
+	}
+	.podcast-diamond-line--1 {
+		top: 33px;
+		right: 18px;
+	}
+	.podcast-diamond-line--2 {
+		bottom: 33px;
+		left: 18px;
+	}
+	.podcast-diamond-inner p {
+		font-size: 16px;
+	}
+	.podcast-diamond-underline {
+		width: 90px;
+	}
+}
+
+/******* -------------- Секции EXHIBITION / LISTEN / ARCHIVE (конец) ------- */
+
+
+/******* -------------- Секция SABSCRIBE (начало) -------------- *******/
+.input_class::placeholder {
+	border: none;
+	border: bottom;
+	color:#222;
+	font-size: 24px;
+	color: rgba(85, 84, 82, 0.6);
+	font-size: 24px;
+	line-height: 100%;
+	letter-spacing: 1.92px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+	
+}
+
+.label-accent {
+color: rgba(85, 84, 82, 0.6);
+font-size: 24px;
+line-height: 100%;
+letter-spacing: 1.92px;
+font-family: "Roboto", 'Tahoma', sans-serif;
+}
+
+.section-sub label {
+	color:#222;
+	font-size: 24px;
+	line-height: 100%;
+	letter-spacing: 1.92px;
+	font-family: "Roboto", 'Tahoma', sans-serif;
+
+}
+
+.section-sub input {
+	width: 516px;
+	font-size: 20px;
+	font-family: "Open Sans", sans-serif;
+	color: rgba(85, 84, 82, 0.6);
+	font-weight: 400;
+	line-height: 140%;
+	margin-bottom: 8px;
+	border-top: #222;
+	border-left: #222;
+	border-right: #222;
+	margin-left: 46px;
+	margin-right: 30px;
+}
+/* Прим.: в оригинале правила для label/input/A были без скоупа — на
+   исходном одностраничном сайте это не имело значения (там ровно одна
+   форма и весь текст ссылок либо белый в футере, либо переопределён
+   классом). У нас сайт многостраничный, поэтому скоупим их, чтобы не
+   ломать поля форм бронирования и обычные ссылки на других страницах. */
+
+.button_type_sabscribe {
+	color: #fff;
+	background-color: #222;
+	padding: 14px 50px;
+
+}
+
+.button_type_sabscribe:hover {
+	color: #222; 
+	background-color: #fff;
+	box-shadow: 2px 5px 10px 0px rgba(34, 34, 34, .2);
+}
+
+.button_type_sabscribe:active {
+	color: #222;
+	background-color: transparent;
+	border: 1px solid #222;
+	box-shadow: none;
+}
+
+.section-sub {
+	margin-bottom: 68px;
+}
+
+/* Инлайн-статус отправки формы подписки (доп. элемент сверх оригинала) */
+.subscribe-msg {
+	width: 100%;
+	margin-top: 8px;
+	margin-left: 46px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+}
+.subscribe-msg.ok { color: #4d7a52; }
+.subscribe-msg.err { color: #b4453f; }
+
+/******* -------------- Секция SABSCRIBE (конец) -------------- *******/
+
+
+/******* -------------- Секция FOOTER (начало) -------------- *******/
+footer {
+	background-color: #222;
+}
+
+.footer-block {
+	color: white;
+	padding: 40px 0px;
+  }
+
+  .row.info {
+	margin-left: 190px;
+	margin-bottom: 52px;
+  }
+  
+  .info {
+	margin-left: 190px;
+	margin-bottom: 52px;
+  }
+  .col-lg-6.main {
+	padding-left: 22px !important;
+  }
+  
+  .top-letters {
+	color: #e1d3ce;
+	text-align: start;
+	height: 60px;
+	display: contents;
+  }
+  .inner-line {
+	display: flex;
+	height: 77px;
+	margin-bottom: 5px;
+  }
+  .up {
+	margin-left: 38px;
+	margin-top: 20px;
+	display: flex;
+	font-size: 20px;
+	font-weight: 400;
+  }
+  .little-icon {
+	height: 24px;
+	width: 24px;
+	margin-right: 16px;
+  }
+  
+  .col-lg-6.main:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0%;
+	border-left: 2px solid #fff;
+	transform: translate(-50%);
+	height: 244px;
+  }
+  .us-rotate {
+	transform: rotate(-90deg);
+	text-align: initial;
+	position: absolute;
+	bottom: -12px;
+	left: -16px;
+	font-size: 24px;
+	font-weight: 500;
+	margin-bottom: 10px !important;
+  }
+  
+  .col-3 {
+	position: relative;
+  }
+  .rotated {
+	transform: rotate(-90deg);
+	text-align: initial;
+	position: absolute;
+	bottom: 55px;
+	right: -36px;
+	font-size: 24px;
+	margin-bottom: 10px !important;
+  }
+  .additional {
+	padding-left: 22px !important;
+	padding-top: 44px;
+  }
+  
+  .footer-menu {
+	list-style-type: none;
+	margin-left: -32px;
+  }
+
+  .additional:before {
+	content: "";
+	position: absolute;
+	top: -72px;
+	bottom: 0;
+	left: 0%;
+	border-left: 2px solid #fff;
+	transform: translate(-50%);
+	height: 344px;
+  }
+  .small-letters {
+	text-align: start;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 40px;
+  }
+  
+  .last-line {
+	padding-top: 26px;
+	font-size: 20px;
+  }
+  .col-4.left {
+	text-align: start;
+	padding-left: 0 !important;
+  }
+  .col-4.right {
+	text-align: end;
+	padding-right: 0 !important;
+  }
+  
+  .logo {
+	text-align: start;
+  }
+  img.logo {
+	width: 77px;
+	height: 32px;
+  }
+  
+  .arrow {
+	text-align: end;
+  }
+  img.arrow {
+	height: 44px;
+	width: 44px;
+  }
+
+  /* Кнопка "наверх" (по запросу пользователя, декоративная стрелка стала кликабельной) */
+  .scroll-to-top-btn {
+	border: none;
+	background: transparent;
+	padding: 0;
+	line-height: 0;
+	cursor: pointer;
+	transition: transform .15s ease;
+  }
+  .scroll-to-top-btn:hover {
+	transform: translateY(-2px);
+  }
+  
+  div.top-letters {
+	color: #e1d3ce;
+	text-align: start;
+	height: 60px;
+	font-size: 60px;
+	font-weight: 700;
+	display: contents;
+  }
+  
+  .last-line {
+	border-top: 1px solid white;
+  }
+
+  .top-letters-museum{
+	font-weight: 700;
+	font-size: 60px;
+	text-align: end;
+	margin-right: -192px;
+	color: #e1d3ce;
+  } 
+
+  .col-4.center {
+	text-align: center;
+	
+  }
+  
+  footer a {
+	  color: #FFFFFF;
+  }
+
+  footer a:hover {
+color: #E1D3CE;
+  }
+
+  /* Доп. hover-эффекты футера (по запросу пользователя, сверх оригинала):
+     email подчёркивается, иконки Follow/Write приподнимаются, пункты
+     футер-меню под "Museum Info" подчёркиваются. */
+  .contact-value:hover {
+	text-decoration: underline;
+  }
+
+  .little-icon {
+	transition: transform .15s ease;
+  }
+  .little-icon:hover {
+	transform: translateY(-2px);
+  }
+
+  .small-letters:hover {
+	text-decoration: underline;
+  }
+
+/******* -------------- Секция FOOTER (конец) -------------- *******/
+
+/******* -------------- МЕДИА-ЗАПРОСЫ (начало) -------------- *******/
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1290px;
+	}
+}

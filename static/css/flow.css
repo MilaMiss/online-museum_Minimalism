@@ -1,0 +1,1002 @@
+/* Стили для многошагового флоу бронирования билетов (exhibition, reservation,
+   checkout, done) — переиспользуют шрифты/цвета/радиусы клонированного
+   дизайна (site/css/style.css: Roboto + Open Sans, #222 / #9D7875 / #e1d3ce),
+   но описывают элементы, которых нет на статичной главной странице оригинала.
+   Всё, что не является уникальным именем класса, скоуплено под .flow-page,
+   чтобы не задевать вёрстку главной страницы. */
+
+:root {
+  --ink: #222222;
+  --paper: #ffffff;
+  --beige: #efe4dc;
+  --beige-2: #e7d9cf;
+  --rose: #9D7875;
+  --muted: #857f7c;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+}
+
+.flow-page {
+  padding-top: 24px;
+  padding-bottom: 40px;
+  font-family: "Open Sans", sans-serif;
+  color: var(--ink);
+}
+
+.flow-page h1, .flow-page h2, .flow-page h3, .flow-page h4 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  margin: 0 0 0.4em;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.flow-page a { color: inherit; text-decoration: none; }
+
+.flow-page section { padding: 40px 0; }
+.section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.section-title-row .line { flex: 1; height: 1px; background: #e3dcd3; }
+/* Recommendations на /done: в макете линии — короткие (160px, тот же
+   размер, что и .section-header-line у Exhibition/Listen), стоят у самых
+   краёв контейнера, а не тянутся вплотную к заголовку. Правая линия
+   отдельно прижата к правому краю через margin-left:auto — из-за этого
+   между заголовком и ней остаётся пустое место, как в макете. */
+.section-title-row--edge-lines { gap: 24px; }
+.section-title-row--edge-lines .line { flex: none; width: 160px; }
+.section-title-row--edge-lines .line:last-child { margin-left: auto; }
+
+/* ---------- Back link ---------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d9d2c9;
+  border-radius: 999px;
+  padding: 8px 16px 8px 12px;
+  font-size: 14px;
+  margin: 18px 0 6px;
+  font-family: "Roboto", sans-serif;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 20px;
+  padding: 13px 36px;
+  font-family: "Roboto", sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  transition: transform .12s ease, background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.btn:active { transform: scale(0.98); }
+
+.btn-rose { background: var(--rose); color: #fff; }
+.btn-rose:hover { color: #222; background-color: #fff; box-shadow: 2px 5px 10px 0 rgba(34,34,34,.2); }
+.btn-rose:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-outline { background: transparent; border: 1px solid #222; color: var(--ink); }
+.btn-outline:hover { color: #222; background-color: #fff; box-shadow: 2px 5px 10px 0 rgba(34,34,34,.2); }
+
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { color: #222; background-color: #fff; box-shadow: 2px 5px 10px 0 rgba(34,34,34,.2); }
+
+.btn-block { width: 100%; }
+
+/* ---------- Exhibition detail page ---------- */
+/* Полноширинный (во всю ширину .container, тем же приёмом, что и
+   .recommend-card-label) hero-баннер с крупной кремовой плашкой поверх —
+   в макете фото не скруглено и не ограничено, скруглена только плашка. */
+.ex-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  min-height: 540px;
+  background: linear-gradient(150deg, #2c2c2c, #050505);
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  margin: 10px 0 40px;
+  width: 100%;
+}
+/* Кремовая плашка — в правом нижнем углу фото, как в макете (не по
+   центру). Ширина фиксирована, чтобы от неё же считать границу
+   двухцветного заголовка (см. .ex-hero-title ниже). padding-top оставляет
+   место над датой ровно под то место, где садится заголовок (см.
+   .ex-hero-title-wrap). */
+.ex-hero-panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 580px;
+  max-width: calc(100% - 24px);
+  background: var(--beige);
+  border-radius: var(--radius-md);
+  /* Левый отступ — 10px (по запросу): текст (дата/описание/длительность)
+     стоит почти вровень с первой тёмной буквой заголовка (она всегда на
+     левом краю плашки, см. clip-path у .ex-hero-title), с небольшим
+     зазором, чтобы не липнуть к самому краю. */
+  padding: 96px 52px 36px 10px;
+  box-shadow: 0 24px 50px rgba(20,15,12,.18);
+}
+.ex-hero-panel .dates { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 18px; }
+.ex-hero-panel p { font-size: 15px; color: #4c4642; margin-bottom: 20px; }
+.ex-hero-panel .duration { font-size: 14px; font-weight: 700; color: var(--ink); }
+
+/* Заголовок наложен поверх и фото, и плашки: два одинаковых текста друг
+   на друге, каждый обрезан clip-path по границе плашки (0 / 580px), так
+   что часть слова остаётся белой на фото, часть — тёмной на кремовом, как
+   на карточках главной страницы (те же #fff / #222). Позиция — независимо
+   от плашки, от нижнего края hero: так гарантированно не зависит от
+   высоты плашки (она разная у разных выставок из-за разной длины intro). */
+.ex-hero-title-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 198px;
+}
+.ex-hero-title {
+  /* !important нужен: .flow-page h1 (margin:0 0 .4em) специфичнее одного
+     класса и иначе перебивает — из-за этого обёртка была на ~29px выше
+     видимого текста и весь расчёт зазора до даты (см. скрипт внизу
+     страницы) съезжал. */
+  margin: 0 !important;
+  text-align: right;
+  /* Сдвиг влево, чтобы 1-2 буквы гарантированно попадали на фото — тот же
+     сдвиг, что и у Sequence, единый для всех выставок. */
+  padding-right: 310px;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1.05;
+}
+/* Nominal — по запросу: граница цвета сдвинута ещё на одну букву, чтобы
+   "NO" было белым на фото, а "MINAL" целиком тёмным на кремовом. */
+.ex-hero-title-wrap--nominal .ex-hero-title {
+  padding-right: 359px;
+}
+/* Perfection — по запросу: "PERFECT" белым на фото, "ION" тёмным на
+   кремовом. */
+.ex-hero-title-wrap--perfection .ex-hero-title {
+  padding-right: 461px;
+}
+/* Conciseness — по запросу: "NESS" тёмным на кремовом, "CONCISE" целиком
+   белым на фото. */
+.ex-hero-title-wrap--conciseness .ex-hero-title {
+  padding-right: 403px;
+}
+.ex-hero-title.is-light {
+  color: #fff;
+  clip-path: inset(0 580px 0 0);
+  /* Плотная тень прямо под буквами гарантирует контраст независимо от
+     тона фото под конкретным словом (у разных выставок разные фото). */
+  text-shadow: 0 2px 4px rgba(0,0,0,.85), 0 6px 26px rgba(0,0,0,.55);
+}
+.ex-hero-title.is-dark { color: var(--ink); clip-path: inset(0 0 0 calc(100% - 580px)); }
+.ex-hero-title.is-dark { position: absolute; top: 0; left: 0; right: 0; }
+/* Заголовки, где N последних слов должны быть тёмными целиком (на плашке),
+   а остальное — белым целиком (на фото) — напр. "DESIGN" у Japanese Minimal
+   Design, "OUR LIVES" у Minimalism in our lives. Общий clip-path-механизм
+   is-light/is-dark делит текст по ОДНОЙ вертикальной границе, общей для
+   всех строк — ломается и на переносе (несколько строк на узком экране),
+   и без переноса (весь заголовок в одну строку на широком красился бы
+   целиком). Вместо этого второй h1-слой (is-dark) тут не используется —
+   хвостовые слова выделены в свой span и покрашены явно, независимо от
+   того, где именно текст переносится. */
+.ex-hero-title-wrap--split-dark-tail .ex-hero-title.is-dark { display: none; }
+.ex-hero-title-wrap--split-dark-tail .ex-hero-title.is-light {
+  clip-path: none;
+}
+.ex-hero-title-wrap--split-dark-tail .ex-hero-title-dark-word {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.concept-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  padding: 40px 0;
+}
+/* Картинки для этих трёх блоков вырезаны прямо из исходного макета
+   (1.pdf) вместе с номером 01/02/03 (и, для перевёрнутых блоков,
+   вертикальной подписью "concept") уже впечатанными в фото — это
+   точная копия оригинала без CSS-имитации наложения. Поэтому здесь
+   обычный <img> в естественных пропорциях, а не background-cover. */
+.concept-block .visual {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-md);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .concept-block .visual {
+    transition: transform .4s ease, box-shadow .4s ease;
+  }
+  .concept-block .visual:hover {
+    transform: scale(1.015);
+    box-shadow: 0 20px 40px rgba(34,34,34,.18);
+  }
+}
+.concept-block .eyebrow { text-transform: lowercase; font-size: 15px; color: var(--muted); margin-bottom: 12px; }
+
+/* В макете бежевая плашка только вокруг фото художника — текст (имя, роль,
+   био, цитата) лежит на обычном белом фоне, без карточки. */
+.artist-block {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.artist-block h2 { font-size: 44px; }
+/* Подчёркнуто только имя (первое слово), не вся ФИО-строка — как в макете. */
+.artist-name-underline { border-bottom: 3px solid var(--ink); padding-bottom: 6px; }
+.artist-block .role { color: var(--muted); font-size: 19px; margin-bottom: 14px; }
+/* Без вертикальной линии слева — в макете её нет. Размер, отступ сверху
+   (от текста био) и левый отступ измерены напрямую по 1.pdf: 32pt/20pt
+   шрифт, 102pt зазор, 109pt отступ — при масштабе макет(1440)->контейнер
+   (~1140) это 26px / 82px / 87px. */
+.artist-block blockquote {
+  position: relative;
+  font-size: 26px;
+  font-weight: 700;
+  padding-left: 87px;
+  margin: 82px 0 0;
+}
+/* Крупный декоративный символ кавычек перед цитатой — измерено и
+   сэмплировано по цвету напрямую из макета (1.pdf). */
+.quote-mark {
+  position: absolute;
+  left: 63px;
+  top: -54px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 140px;
+  font-weight: 700;
+  font-style: italic;
+  color: #e1d6d6;
+  line-height: 1;
+  z-index: -1;
+  pointer-events: none;
+}
+.artist-photo-frame {
+  background: var(--beige);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+}
+.artist-photo {
+  aspect-ratio: 4/5;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, #444, #111);
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- Plan your visit ---------- */
+.plan-visit h2 { margin-bottom: 4px; }
+.plan-visit .sub { color: var(--muted); margin-bottom: 22px; }
+.day-toggle { display: flex; gap: 10px; }
+.plan-visit-header .day-toggle { flex: none; }
+/* Раньше — .section-title-row: линии растягивались (flex:1) до середины.
+   Теперь — тот же паттерн, что у "Exhibition"/"Confirmation": короткая
+   линия слева с выбегом за контейнер (.section-divider-heading::before) +
+   короткая 160px линия справа (.section-header-line), без растягивания.
+   font-size:32px — фактический прежний размер (был просто дефолт браузера
+   для h2, теперь закреплён явно). */
+.plan-visit-header h2 { flex: none; margin: 0 !important; font-size: 32px; white-space: nowrap; }
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 34px;
+}
+.slot-btn {
+  border: 1px solid #d9d2c9;
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, color .15s ease;
+}
+.slot-btn.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+.slot-btn:not(.selected):hover { border-color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .slot-btn { transition: transform .15s ease, border-color .15s ease, background .15s ease, color .15s ease; }
+  .slot-btn:not(.selected):hover { transform: translateY(-2px); }
+}
+
+.interaction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+/* Ромбовидная иконка (квадрат, повёрнутый на 45°) + подпись под ней —
+   как в макете; сама карточка без рамки/фона, чисто по центру текста. */
+.interaction-card {
+  padding: 0 10px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--ink);
+}
+.interaction-card .icon {
+  width: 96px; height: 96px;
+  border-radius: 20px;
+  border: 1px solid #e3dcd3;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(34,34,34,.08);
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink);
+  transform: rotate(45deg);
+  transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
+}
+.interaction-card .icon svg { transform: rotate(-45deg); }
+.interaction-card.selected .icon { background: var(--ink); color: #fff; border-color: var(--ink); }
+.interaction-card:not(.selected):hover .icon { border-color: var(--ink); box-shadow: 0 14px 30px rgba(34,34,34,.14); }
+@media (prefers-reduced-motion: no-preference) {
+  .interaction-card .icon { transition: background .15s, border-color .15s, color .15s, box-shadow .15s, transform .2s ease; }
+  .interaction-card:not(.selected):hover .icon { transform: rotate(45deg) scale(1.08); }
+}
+.interaction-underline { width: 34px; height: 1px; background: #222; margin: 0 auto 12px; }
+.interaction-label { font-family: "Roboto", sans-serif; font-weight: 700; font-size: 15px; color: var(--muted); }
+.interaction-card.selected .interaction-label { color: var(--ink); }
+.interaction-card p { font-size: 13px; color: #5a544f; margin: 10px 0; }
+.interaction-card small { font-size: 11px; color: var(--muted); }
+
+.plan-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+
+/* ---------- Reservation / ticket page ---------- */
+/* В макете плашка занимает всю ширину контента (как order-table на
+   checkout), заголовок "Your reservation" НЕ двухцветный — оба слова
+   одним тёмным цветом текста, просто "Your" начинается ЛЕВЕЕ левого края
+   плашки (лежит на белом фоне страницы), а "reservation" уже наложен на
+   кремовый фон плашки. Размеры измерены напрямую по 1.pdf (масштаб 0.8):
+   высота плашки ~320px, шрифт заголовка 56pt->45px, левый сдвиг заголовка
+   рассчитан так, что граница слов "Your"/"reservation" совпадает с левым
+   краем плашки. */
+.reservation-hero {
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, var(--beige-2), var(--beige));
+  padding: 40px 63px;
+  margin: 10px 0 40px;
+  position: relative;
+  /* z-index:0 создаёт собственный stacking context: без него
+     position:relative само по себе НЕ создаёт stacking context, и
+     z-index:-1 у .orb::after (тень шара) "убегал" до корневого контекста
+     документа и рисовался под белым фоном body — тень была полностью
+     невидима, хотя вычисленные CSS-свойства выглядели корректно. */
+  z-index: 0;
+  overflow: visible;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  /* В макете текстовый блок прижат к низу плашки (заголовок начинается
+     примерно на середине высоты, параграф заканчивается у самого низа) —
+     не по центру. Из-за этого параграф визуально оказывается в зоне тени
+     шара. */
+  justify-content: flex-end;
+}
+.reservation-title {
+  /* !important нужен: .flow-page h1 (margin:0 0 .4em) специфичнее одного
+     класса и иначе перебивает margin-left — тот же баг, что уже был у
+     .ex-hero-title. */
+  position: relative;
+  z-index: 1;
+  font-size: 45px;
+  margin: 0 0 12px -150px !important;
+}
+.reservation-hero p {
+  position: relative;
+  z-index: 1;
+  font-size: 16px;
+}
+/* Декоративный "уголок" сверху справа — та же плитка чуть меньшего
+   размера поверх основной, с белой каймой снизу/слева, имитирующей зазор
+   между двумя скруглёнными плитками (как в композиции квадратов на
+   главной странице). */
+.reservation-hero-tab {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 140px;
+  height: 275px;
+  box-sizing: border-box;
+  background: linear-gradient(120deg, var(--beige-2), var(--beige));
+  border-radius: var(--radius-lg);
+  border-bottom: 12px solid #fff;
+  border-left: 12px solid #fff;
+}
+/* Настоящий крупный шар (как в промо-блоке главной страницы) с мягкой
+   тенью на кремовый фон — вместо прежнего мелкого декоративного кружка.
+   box-shadow один в один повторяет форму круга (размытый диск), поэтому
+   почти не читался как тень на поверхности — вместо него отдельный
+   эллипс (::after), приплюснутый и затемнённый по центру, имитирующий
+   настоящую "земную" тень под шаром. */
+.reservation-hero .orb {
+  position: absolute;
+  left: 300px;
+  top: 10px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #d9c9ba 75%);
+}
+.reservation-hero .orb::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 4%;
+  bottom: -10px;
+  width: 92%;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(55,36,24,.75) 0%, rgba(55,36,24,.42) 45%, rgba(55,36,24,0) 72%);
+  filter: blur(2px);
+}
+
+/* В макете это НЕ сетка "колонка слева / колонка справа" — фото+описание+
+   Ticket price занимают почти всю ширину блока, а session-card (XR)
+   лежит плавающей карточкой поверх свободного места в верхнем правом
+   углу (её Y-диапазон заканчивается выше, чем начинается текст). */
+.ticket-summary { position: relative; margin-bottom: 50px; }
+/* В макете фото — высокое (aspect-ratio ~406/573pt), занимает всю высоту
+   блока; описание и Ticket price стоят СПРАВА от фото в одной колонке,
+   а не под фото на всю ширину. Ширина фото — в процентах (не фикс. px):
+   при точной ширине из 1.pdf текст на реальных (более широких, чем канва
+   макета 1440px) экранах переносится не в 3, а в 5-6 строк — % даёт
+   разумный компромисс между размером фото и переносом текста. */
+.ticket-photo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 25px;
+}
+.ticket-photo {
+  flex: 0 0 40%;
+  aspect-ratio: 406/573;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, #3a3a3a, #0a0a0a);
+  background-size: cover;
+  background-position: center;
+}
+.ticket-info-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ticket-photo-text {
+  /* Вертикальные % margin в CSS считаются от ШИРИНЫ containing block —
+     это заставляет отступ расти/сжиматься вместе с высотой фото (которая
+     тоже зависит от ширины через aspect-ratio), а не рассинхронизироваться
+     с ней, как было бы с фикс. px. 48% ~ текст начинается примерно с
+     середины высоты фото, как в макете. */
+  margin: 48% 0 0;
+  color: #4c4642;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.ticket-price-block {
+  /* Аналогично — 19%/21% от ширины колонки вместо фикс. px, чтобы отступ
+     сверху и сдвиг вправо остались пропорциональны фото на любой ширине. */
+  margin: 19% 0 0 21%;
+}
+.ticket-price-heading { font-size: 20px; margin: 0; }
+/* 56pt в макете (масштаб 0.8), как "Your Order"/"Done!" — тот же размер
+   заголовка страницы, что и в остальном флоу бронирования.
+   .section-divider-heading h3 (site/css/style.css) даёт нужный
+   line/margin-left bleed трюк, но её font-size:40px/margin рассчитаны на
+   h3 — здесь h2, свой размер и margin (!important — та же специфичность
+   .flow-page h1..h4, что уже встречалась). */
+.confirmation-title { font-size: 45px; margin: 0 !important; white-space: nowrap; }
+/* 300px (не 280px) — иначе "saturday • May 16, 2026" при 19px переносится
+   на 2 строки, а в макете дата всегда в одну. top:45px — верх карточки на
+   одной параллели с "Exhibition" (высота строки заголовка "Sequence" +
+   его margin-bottom), а не с самим заголовком. */
+.session-card-wrap { position: absolute; top: 45px; right: 0; width: 300px; }
+/* Рамка карточки в макете — сплошная тёмная (var(--ink)), а не бледно-
+   бежевая, и заметно плотнее дефолтного волоска. */
+.session-card {
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 10px;
+}
+/* Размер как у "Sequence" (.ticket-summary h3, 28px) — единый масштаб
+   заголовков в этом блоке. Линия под XR — на всю ширину карточки (та же
+   border-bottom техника, что и padding/margin вокруг неё). */
+.session-card .label {
+  font-family: "Roboto", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  border-bottom: 1.5px solid var(--ink);
+}
+/* margin:0 перебивает Bootstrap .row{margin:0 -15px} — .session-card .row
+   совпадает по имени с классом грид-системы, и без явного margin текст
+   вылезал за padding карточки. */
+.session-card .row { font-size: 19px; color: #4c4642; display: flex; align-items: center; gap: 8px; margin: 0 0 4px; white-space: nowrap; }
+/* Change — отдельное поле ПОД карточкой (не внутри рамки), с подчёркиванием
+   и иконкой карандаша слева от текста. */
+/* .flow-page a {text-decoration:none} той же специфичности (0,1,1) —
+   !important, тот же паттерн, что и у .confirmation-title. */
+.change-link { font-size: 19px; text-align: right; display: block; text-decoration: underline !important; cursor: pointer; }
+
+.price-table { border-top: 1px solid #eee6dd; margin-top: 18px; }
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee6dd;
+  font-size: 15px;
+}
+.price-row .price { font-weight: 700; }
+.qty-control { display: flex; align-items: center; gap: 10px; }
+.qty-control button {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d9d2c9;
+  background: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+.price-total-row {
+  display: flex; justify-content: flex-end; gap: 16px;
+  padding: 16px 0; font-family: "Roboto", sans-serif; font-size: 18px; font-weight: 700;
+}
+
+.contact-methods { display: flex; flex-direction: column; gap: 14px; margin: 20px 0 28px; }
+.contact-methods label { display: flex; align-items: center; gap: 12px; font-size: 15px; cursor: pointer; }
+.contact-method-row { display: flex; align-items: center; gap: 60px; }
+.contact-fields { display: grid; grid-template-columns: 238px 238px; gap: 24px; }
+.contact-fields input {
+  border: none; border-bottom: 1px solid #cfc6ba; background: transparent;
+  padding: 8px 2px; font-size: 14px; width: auto; margin: 0;
+}
+.contact-fields input:focus { outline: none; border-color: var(--ink); }
+
+/* ---------- Checkout page ---------- */
+/* "Your Order" — та же связка line+заголовок+line, что у Exhibition/Listen
+   на главной (.section-divider-heading/.section-header-line), но с
+   заголовком-h1 (56pt в макете, крупнее секционных h3) и вторым элементом
+   (Order Timer) перед правой линией — у него margin-left:auto, поэтому он
+   вместе с линией прижимается к правому краю, а между заголовком и
+   таймером остаётся пустое место, как в 1.pdf. Размеры измерены напрямую
+   по 1.pdf (масштаб макет(1440)->контейнер(~1140) = 0.8). */
+.checkout-title-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.checkout-title-row .line { flex: none; width: 160px; height: 1px; background: #d9d2c9; }
+.checkout-title-row h1 { font-size: 45px; }
+.checkout-title-row .checkout-timer { margin-left: auto; }
+.checkout-timer { font-family: "Roboto", sans-serif; font-weight: 700; font-size: 18px; white-space: nowrap; }
+.promo-note { max-width: 520px; font-size: 19px; }
+/* Поле короткое (238px, по ширине подчёркивания в макете) и НЕ тянется на
+   всю ширину контейнера — раньше было flex:1, из-за чего подчёркивание
+   уезжало через всю страницу. Apply стоит сразу после поля (intrinsic
+   ширина кнопки + gap), как в макете, а не прижатый к правому краю. */
+.promo-row { display: flex; align-items: center; gap: 24px; margin: 18px 0 30px; }
+.promo-row input {
+  flex: none;
+  width: 238px;
+  border: none; border-bottom: 1px solid #cfc6ba; background: transparent;
+  padding: 10px 2px; font-size: 16px; margin: 0;
+}
+.promo-row input:focus { outline: none; border-color: var(--ink); }
+.promo-msg { font-size: 13px; margin-top: -18px; margin-bottom: 20px; min-height: 18px; }
+.promo-msg.ok { color: #4d7a52; }
+.promo-msg.err { color: #b4453f; }
+
+/* Кремовое поле в макете занимает всю ширину контента (как и в проекте) —
+   не сама ширина была проблемой, а то, что шрифт внутри (13/15px) был
+   намного мельче макетных 20pt/24pt, и колонки Quantity/Price/Total были
+   шире, чем нужно их содержимому, из-за чего поле выглядело "пустым и
+   растянутым". Всё измерено напрямую по 1.pdf (масштаб 0.8): паддинги
+   20pt/16pt -> 16px/20px, шапка 20pt -> 16px, строка 24pt -> 19px,
+   подпись даты под названием 20pt -> 16px, пропорции колонок — по x-координатам
+   заголовков (Item/Type/Quantity/Price/Total). */
+/* Правый край поля и "Order Total" ниже подведены под ту же вертикаль,
+   что и правый край "Order Timer" в шапке (там же, где начинается правая
+   декоративная линия) — а не до самого края контейнера. */
+.order-table { background: var(--beige); border-radius: var(--radius-md); padding: 20px 16px; margin-right: 184px; }
+.order-table-head {
+  display: grid;
+  grid-template-columns: 2.8fr 2.7fr 1.3fr 1fr 1.6fr;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.order-table-row {
+  display: grid;
+  grid-template-columns: 2.8fr 2.7fr 1.3fr 1fr 1.6fr;
+  align-items: center;
+  font-size: 19px;
+}
+.order-table-row .item-name { font-weight: 700; }
+.order-table-row .item-sub { font-size: 16px; color: var(--muted); }
+
+.order-total-line { display: flex; justify-content: flex-end; gap: 18px; margin: 20px 184px 34px 0; font-family: "Roboto", sans-serif; font-size: 18px; font-weight: 700; }
+
+.pay-methods { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+/* В макете и "Credit or Debit Card", и "PayPal" — та же ширина колонки
+   (500px), что и у полей карты ниже (.card-fields), не на всю ширину формы.
+   PayPal-плитка в разметке лежит вне .pay-methods (сразу после
+   .card-fields), поэтому ширина ограничена на самом .pay-method-tab, а не
+   на контейнере. */
+.pay-method-tab { max-width: 500px; border-radius: var(--radius-md); padding: 18px 22px; cursor: pointer; }
+.pay-method-tab.active { background: var(--ink); color: #fff; }
+.pay-method-tab:not(.active) { border: 1px solid #e3dcd3; }
+.pay-method-tab .sub { font-size: 12px; opacity: .7; }
+
+/* В макете поля ввода карты не тянутся на всю ширину контента — измерено
+   по подчёркиваниям в 1.pdf: Credit card 625pt, Month/Year/CVC вместе
+   занимают такую же общую ширину; при масштабе 0.8 это 500px. */
+.card-fields { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 500px; margin-bottom: 20px; }
+.card-fields .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.card-fields input {
+  width: 100%;
+  border: none; border-bottom: 1px solid #cfc6ba; background: transparent;
+  padding: 10px 2px; font-size: 16px; margin: 0;
+}
+.card-fields input:focus { outline: none; border-color: var(--ink); }
+
+/* 20pt в макете -> 16px; на этом размере строка доходит почти вплотную
+   до правого края плитки PayPal, как и задумано (сверено через
+   getBoundingClientRect после правки). */
+.terms-row { display: flex; align-items: center; gap: 12px; margin: 20px 0 30px; font-size: 16px; }
+.terms-row a { text-decoration: underline; }
+/* align-items:center центрирует geometric-бокс подписи, но из-за метрик
+   шрифта (аскендеры/десцендеры) текст визуально "плывёт" на ~4px выше
+   центра иконки — сдвигаем вниз, сверено через getBoundingClientRect(). */
+.terms-row label { position: relative; top: 4px; }
+/* Чекбокс в макете крупный скруглённый квадрат ~28px (измерено по 1.pdf:
+   35.5pt*0.8), а не мелкий системный флажок. border-radius на нативном
+   чекбоксе браузер игнорирует (действует только width/height) — поэтому
+   appearance:none и своя галочка через ::after. align-items:center у
+   .terms-row центрирует подпись по высоте иконки. */
+.terms-row input[type="checkbox"] {
+  flex: none;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+.terms-row input[type="checkbox"]:checked {
+  background: var(--ink);
+}
+.terms-row input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 4px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.form-error { color: #b4453f; font-size: 14px; margin-bottom: 16px; }
+/* В макете Pay — короткая кнопка (не на всю ширину формы). Размер сделан
+   точно как у Apply (тот же .btn, но у Apply есть 1px рамка — без
+   box-sizing:border-box и явных width/height "Pay" из-за более короткого
+   текста и отсутствия рамки был на пару px уже/ниже). Правый край выставлен
+   по одной вертикали с правым краем PayPal/Credit card (край 500px-колонки
+   .card-fields/.pay-method-tab): margin-left = 500px - ширина кнопки. */
+.pay-btn { box-sizing: border-box; width: 117px; height: 54px; margin-left: 383px; }
+
+/* ---------- Done page ---------- */
+.done-hero { display: flex; align-items: center; gap: 28px; margin: 20px 0 40px; }
+/* Не функциональный прогресс-бар (нет заполненной/пустой части) — чисто
+   декоративная плашка высотой вровень с "Done!", как в макете. */
+.done-hero .progress { flex: 1; height: 48px; border-radius: 24px; background: var(--beige); }
+.done-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; }
+/* Тонкая линия между текстом благодарности и строками время/дата — как в
+   макете (там раньше её не было). В макете она не на всю ширину колонки,
+   а ровно по ширине самой длинной строки текста ("...to your Email."). */
+.done-divider { width: 340px; max-width: 100%; height: 1px; background: #d9d2c9; margin: 18px 0; }
+.done-photo {
+  aspect-ratio: 2/1;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, #3a3a3a, #0a0a0a);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Карточки рекомендаций: подпись художника — не наложение поверх фото, а
+   отдельная бежевая полоса сбоку от изображения (в макете эта полоса
+   "выбегает" за край страницы; здесь — до края .container, тем же приёмом,
+   что уже используется в проекте вместо бликов в край экрана). Полосы
+   чередуются местами (слева/справа) через каждую вторую карточку. */
+.recommend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+/* В макете карточки не на одной линии — правая колонка (каждая вторая
+   карточка) сдвинута вниз примерно на 67px (измерено по 1.pdf: разница
+   в высоте старта карточек 84pt, при масштабе макет(1440)->контейнер
+   (~1140) это 67px). */
+.recommend-grid > div:nth-child(2n) { margin-top: 67px; }
+/* "Read more" выровнена по правому краю фото у карточек с полосой слева
+   (label-панель слева, фото справа) — у карточек с полосой справа кнопка
+   уже и так слева, там менять нечего. */
+.recommend-grid > div:nth-child(2n+1) { text-align: right; }
+.recommend-card {
+  position: relative;
+  aspect-ratio: 2/1;
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.recommend-card--reverse { flex-direction: row-reverse; }
+.recommend-card-label {
+  flex: 0 0 90px;
+  margin-left: -15px;
+  background: var(--beige);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 72px; /* было 22px — имя и вертикальная линия подняты на 50px */
+}
+.recommend-card--reverse .recommend-card-label {
+  margin-left: 0;
+  margin-right: -15px;
+}
+.recommend-card .artist {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 19px;
+  color: var(--ink);
+  padding-left: 14px;
+  border-left: 1px solid #cbbfae;
+  white-space: nowrap;
+  margin-left: 16px;
+}
+.recommend-card--reverse .artist {
+  border-left: none;
+  border-right: 1px solid #cbbfae;
+  padding-left: 0;
+  padding-right: 14px;
+  margin-left: 0;
+  margin-right: 16px;
+}
+.recommend-card-media {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: #ded2c4;
+  isolation: isolate;
+}
+.recommend-card-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(0deg, rgba(10,8,7,.5) 0%, rgba(10,8,7,0) 45%);
+}
+/* Заголовок карточки наложен поверх и label-полосы, и фото (как заголовок
+   hero на странице выставки): два одинаковых текста друг на друге, каждый
+   обрезан clip-path по границе label/фото (90px минус 15px "выбега" за
+   счёт отрицательного margin у .recommend-card-label = 75px от левого
+   края для обычных карточек, 90px от правого — для перевёрнутых). Размер
+   — 32px/19px, измерено по 1.pdf (40pt/24pt, масштаб 0.8). */
+.recommend-card-title-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+}
+.recommend-card .title {
+  display: block;
+  margin: 0;
+  /* Слева 13px, справа 9px — измерено посимвольно так, чтобы граница
+     обрезки (75px от края, см. .title.is-light/.is-dark ниже) проходила
+     ровно между буквами: "OCT|AHEDRON" у обычных карточек (используют
+     padding-left) и "CHEVR|ONS" у перевёрнутых (используют padding-right;
+     text-align:right у них, поэтому padding-left тут не участвует). */
+  padding: 0 9px 0 13px;
+  /* Явно левое — иначе у нечётных карточек наследуется text-align:right
+     от обёртки (см. правило .recommend-grid > div:nth-child(2n+1) выше,
+     оно для кнопки "Read more"), и заголовок целиком уезжал за границу
+     обрезки, оставаясь только светлым. */
+  text-align: left;
+  font-family: "Roboto", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.recommend-card .title.is-dark { position: absolute; top: 0; left: 0; right: 0; }
+.recommend-card .title.is-light {
+  color: #fff;
+  clip-path: inset(0 0 0 75px);
+  text-shadow: 0 2px 4px rgba(0,0,0,.85), 0 6px 26px rgba(0,0,0,.55);
+}
+.recommend-card .title.is-dark { color: var(--ink); clip-path: inset(0 calc(100% - 75px) 0 0); }
+.recommend-card--reverse .title { text-align: right; }
+/* 75px, не 90 — граница label/фото у перевёрнутой карточки съезжает
+   так же, как и у обычной (тот же -15px "выбег" margin у label). */
+.recommend-card--reverse .title.is-light { clip-path: inset(0 75px 0 0); }
+.recommend-card--reverse .title.is-dark { clip-path: inset(0 0 0 calc(100% - 75px)); }
+
+/* ---------- Calendar popup ---------- */
+.calendar-popup {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 50px rgba(20,16,14,0.18);
+  padding: 20px 22px;
+  width: 320px;
+}
+.calendar-popup.open { display: block; }
+.calendar-popup .cal-head { display: flex; align-items: center; justify-content: space-between; font-size: 16px; margin-bottom: 14px; }
+.calendar-popup .cal-nav { cursor: pointer; color: var(--muted); font-size: 18px; }
+.calendar-popup .cal-weekdays, .calendar-popup .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; }
+.calendar-popup .cal-weekdays span { font-size: 12px; font-weight: 700; color: var(--muted); padding-bottom: 8px; }
+.calendar-popup .cal-days span { font-size: 14px; padding: 8px 0; border-radius: 50%; cursor: pointer; }
+.calendar-popup .cal-days span:not(.empty):hover { background: var(--beige); }
+.calendar-popup .cal-days span.today { font-weight: 700; }
+.calendar-popup .cal-days span.selected-day { border: 1px solid var(--ink); font-weight: 700; }
+.calendar-popup .cal-days span.empty { cursor: default; }
+
+/* ---------- Misc / responsive ---------- */
+.flow-page .text-muted { color: var(--muted); }
+.flow-page .mt-0 { margin-top: 0; }
+
+@media (max-width: 900px) {
+  .ticket-summary, .concept-block, .artist-block, .done-summary, .interaction-grid, .recommend-grid {
+    grid-template-columns: 1fr !important;
+  }
+  /* На мобильном карточки идут в один столбец — десктопный "шахматный"
+     сдвиг второй колонки вниз тут не нужен. */
+  .recommend-grid > div:nth-child(2n) { margin-top: 0; }
+  .slot-grid { grid-template-columns: repeat(3, 1fr); }
+  .order-table-head, .order-table-row { grid-template-columns: 2fr 1fr 1fr 1fr; font-size: 13px; }
+  .order-table-head span:nth-child(4), .order-table-row span:nth-child(4) { display: none; }
+  /* 184px-отступ справа рассчитан под ширину десктопной линии у Order
+     Timer — на узком экране просто убираем, иначе поле станет слишком
+     узким. */
+  .order-table, .order-total-line { margin-right: 0; }
+  .card-fields { max-width: none; }
+  .card-fields .row3 { grid-template-columns: 1fr; }
+  .contact-method-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .contact-fields { grid-template-columns: 1fr; }
+  /* Фиксированные 160px-линии и nowrap-таймер в связке с заголовком не
+     помещаются на узком экране и растягивают всю страницу по горизонтали —
+     на мобильном убираем линии и даём заголовку/таймеру перенос в столбец. */
+  .checkout-title-row { flex-wrap: wrap; gap: 8px 20px; }
+  .checkout-title-row .line { display: none; }
+  .checkout-title-row .checkout-timer { margin-left: 0; }
+  .promo-row { flex-wrap: wrap; }
+  .promo-row input { width: 100%; }
+  /* 306px-отступ рассчитан под ширину десктопной формы — на узком экране
+     кнопку просто растягиваем на всю ширину, как остальные поля/кнопки. */
+  .pay-btn { margin-left: 0; width: 100%; }
+  /* Декоративный шар рассчитан на широкий hero-блок — на узком экране
+     наезжает на заголовок. */
+  .reservation-hero .orb { display: none; }
+  /* -87px левого "выбега" заголовка (чтобы "Your" лежало на белом фоне до
+     карточки) рассчитан под широкую карточку — на узком экране обрезает
+     текст за левый край экрана. Угловая плитка тоже только на широком
+     hero. */
+  .reservation-title { margin-left: 0 !important; }
+  .reservation-hero-tab { display: none; }
+  /* На десктопе session-card-wrap — абсолютно спозиционированная плитка в
+     верхнем правом углу (лежит поверх свободного места над текстом) — на
+     узком экране такой карточке некуда деться без наложения на заголовок,
+     возвращаем её в обычный поток на всю ширину. */
+  .session-card-wrap { position: static; width: auto; margin-bottom: 20px; }
+  /* Фикс. 324px ширина фото рядом с текстом рассчитана на десктопную
+     колонку — на узком экране просто складываем в столбец, как раньше. */
+  .ticket-photo-row { flex-direction: column; align-items: stretch; }
+  .ticket-photo { flex-basis: auto; }
+  .ticket-photo-text { margin-top: 18px; }
+  /* Десктопные % отступы держат текст и Ticket price на нужной высоте/
+     сдвиге рядом с высоким фото — при переносе в колонку это уже не
+     нужно, иначе повиснет огромный пустой блок и лишний правый сдвиг. */
+  .ticket-price-block { margin: 18px 0 0; }
+  /* На мобильном карточка на всю ширину контейнера — "выбег" бежевой
+     полосы за край .container больше не нужен и только обрежется. */
+  .recommend-card-label,
+  .recommend-card--reverse .recommend-card-label {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  /* На мобильном карточка низкая (aspect-ratio 2/1 при полной ширине
+     экрана, ~157px) — снизу карточки уже стоит заголовок (title-wrap,
+     bottom:22px + строка текста ~48px), поэтому подпись автора снизу
+     класть некуда: либо обрезается (72px отступ), либо накладывается на
+     заголовок (маленький отступ). Переносим подпись к ВЕРХУ карточки и
+     уменьшаем шрифт — "Ronald Bladen" (13 симв.) при 19px не помещается
+     даже сверху (128px против ~87px свободного места), при 11px влезает
+     с запасом (~74px). */
+  .recommend-card-label {
+    align-items: flex-start;
+    padding-top: 6px;
+    padding-bottom: 0;
+  }
+  .recommend-card .artist { font-size: 11px; }
+  /* Hero-плашка выставки на узком экране — обычный блок во всю ширину под
+     фото (не абсолютный "выбег" в угол и не двухцветный заголовок —
+     на узкой колонке текст просто не помещается рядом с фото). */
+  .ex-hero { min-height: 0; display: flex; flex-direction: column; }
+  .ex-hero-panel {
+    position: static;
+    order: 2;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 28px 24px;
+    box-shadow: none;
+  }
+  .ex-hero-title-wrap {
+    position: static;
+    order: 1;
+    min-height: 130px;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px 24px 18px;
+  }
+  .ex-hero-title.is-light { text-shadow: 0 2px 12px rgba(0,0,0,.35); }
+  .ex-hero-title {
+    position: static !important;
+    clip-path: none !important;
+    text-align: left;
+    padding-right: 0;
+    margin: 0;
+  }
+  /* На мобильном заголовок лежит над фото (плашка с текстом идёт ниже,
+     отдельным блоком) — нужен светлый вариант, а не тёмный. */
+  .ex-hero-title.is-dark { display: none; }
+  /* На десктопе хвостовые слова (DESIGN / OUR LIVES) тёмные, т.к. лежат на
+     кремовой плашке — на мобильном плашка уходит под фото, весь заголовок
+     над фото, поэтому тут (как и у остальных выставок) нужен целиком
+     светлый вариант, включая хвостовые слова. */
+  .ex-hero-title-wrap--split-dark-tail .ex-hero-title.is-light {
+    text-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+  .ex-hero-title-wrap--split-dark-tail .ex-hero-title-dark-word {
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+  /* Заголовок "Plan your visit" + переключатель даты не помещаются в один
+     ряд с линией справа — линию прячем (как у Exhibition/Listen), сам
+     переключатель переносится под заголовок на всю ширину. Левый "выбег"
+     (.section-divider-heading::before) уже сбрасывается общим правилом
+     сайта на этой же ширине (site/css/style.css, @media 991px). */
+  .plan-visit-header { flex-wrap: wrap; row-gap: 14px; }
+  .plan-visit-header .section-header-line { display: none; }
+  .plan-visit-header h2 { font-size: 28px; }
+  .plan-visit-header .day-toggle { flex: 0 0 100%; }
+  .interaction-card .icon { width: 76px; height: 76px; }
+  /* Короткие линии по краям у "Recommendations" на узком экране просто не
+     помещаются рядом с заголовком — прячем, как и у Plan your visit. */
+  .section-title-row--edge-lines .line { display: none; }
+}

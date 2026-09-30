@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Done!{% endblock %}
+{% block content %}
+<main class="container flow-page">
+
+<div class="done-hero">
+  <h1 class="mt-0">Done!</h1>
+  <div class="progress"></div>
+</div>
+
+<div class="done-summary">
+  <div>
+    <h3>{{ ex.title }}</h3>
+    <p style="color:#4c4642;">Your excursion has been paid!<br>We have sent the invitation link to your Email.</p>
+    <div class="done-divider"></div>
+    <div class="session-card" style="border:none; padding:0; margin-top:0;">
+      <div class="row">&#128337; {{ booking.time_slot }}</div>
+      <div class="row">&#128197; {{ booking.date_label }}</div>
+    </div>
+  </div>
+  <div class="done-photo" {% if ex.done_image or ex.image %}style="background-image:url('{{ url_for('static', filename=ex.done_image or ex.image) }}')"{% endif %}></div>
+</div>
+
+<section>
+  <div class="section-title-row section-title-row--edge-lines">
+    <div class="line"></div>
+    <h2 class="mt-0">Recommendations</h2>
+    <div class="line"></div>
+  </div>
+  <p class="text-muted" style="margin-bottom:24px;">What other experiences would you like to visit?</p>
+
+  <div class="recommend-grid">
+    {% for r in recommendations %}
+    <div>
+      <div class="recommend-card {{ 'recommend-card--reverse' if loop.index0 % 2 else '' }}">
+        <div class="recommend-card-label">
+          <span class="artist">{{ r.artist }}</span>
+        </div>
+        <div class="recommend-card-media" {% if r.image %}style="background-image:url('{{ url_for('static', filename=r.image) }}')"{% endif %}></div>
+        <div class="recommend-card-title-wrap">
+          <span class="title is-light">{{ r.title.upper() }}</span>
+          <span class="title is-dark">{{ r.title.upper() }}</span>
+        </div>
+      </div>
+      <a class="btn btn-outline" href="{{ url_for('index') }}">Read more</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div style="text-align:center; margin: 40px 0;">
+  <a class="btn btn-rose" href="{{ url_for('index') }}">Back to home</a>
+</div>
+
+</main>
+{% endblock %}

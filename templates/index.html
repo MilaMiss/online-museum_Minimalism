@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+{% block title %}Home | Museum of Minimalism{% endblock %}
+{% block content %}
+
+<!-- Секция PROMO -->
+<section class="promo section" id="art">
+    <div class="container">
+        <div class="row flex-column promo-content">
+            <div class="subtitle col-2">
+                <h4>Museum</h4>
+            </div>
+
+            <div class="title col-7">
+                <h1>Minimalism</h1>
+            </div>
+
+            <div class="about col-6">
+            <p>On our online-platform, you can immerse in the digital aesthetics of simplicity, balance and forms
+                of minimal art.</p>
+            </div>
+
+            <div class="row col-6">
+                <a class="button button_type_promo read-more-link" href="{{ url_for('exhibition', slug=featured.slug) }}">Read more</a>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between col-3 mr-auto">
+                <div class="soc-seti">
+                <button class="facebook-promo" aria-label="Facebook" title="Facebook" type="button"></button>
+                <button class="instagram-promo" aria-label="Instagram" title="Instagram" type="button"></button>
+                <button class="youtube-promo" aria-label="YouTube" title="YouTube" type="button"></button>
+                <img src="{{ url_for('static', filename='site/img/line 120.svg') }}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция PREMIER PROJECT -->
+<section class="premier project section">
+    <div class="container">
+        <div class="row premier project">
+            <div class="premier-img col-12 col-lg-6">
+                <img class="PPseq" src="{{ url_for('static', filename='site/img/Pic Premier Project.svg') }}" alt="{{ featured.title }}">
+                <div class="PP">
+                <p>Premier Project</p>
+                </div>
+            </div>
+
+            <div class="premier-text col-12 col-lg-6">
+                <div class="flex ml-auto about_PP_avtor">
+                    <img class="img-line" src="{{ url_for('static', filename='site/img/Line 298.svg') }}" alt="">
+                        <div class="avtor">
+                        <p>{{ featured.artist.upper() }}</p>
+                        </div>
+                        <div class="about-avtor">
+                        <p>Sculptor<br> From USA, San Francisco</p>
+                        </div>
+                    <img src="{{ url_for('static', filename='site/img/Line 298.svg') }}" alt="">
+                        <div class="data-PP">
+                        <p>{{ featured.dates }}</p>
+                        </div>
+                </div>
+                    <h5 class="w-75">
+                        {{ featured.artist }} Sculpture: Forty Years
+                    </h5>
+                    <p class="about-exhibition">
+                        {{ featured.summary or featured.intro }}
+                    </p>
+
+                <div class="row col-8">
+                    <a class="button read-more-link" href="{{ url_for('exhibition', slug=featured.slug) }}">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция EXHIBITION (по мотивам исходного макета, 1.pdf) -->
+<section class="exhibition-list section" id="exhibitions">
+    <div class="container">
+        <div class="section-header-row">
+            <div class="section-divider-heading">
+                <h3>Exhibition</h3>
+            </div>
+            <div class="section-header-line" aria-hidden="true"></div>
+        </div>
+        <div class="exhibition-intro-row">
+            <p class="exhibition-list-intro">Exhibitions on the latest technologies that allow you to immerse yourself
+                in the atmosphere of simplicity, form and depth of minimalism.</p>
+            <div class="exhibition-interactions">
+                <button type="button" class="exhibition-interaction-icon" title="Visual3D" aria-label="Visual3D">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8.7" y="9" width="6.6" height="4.2" rx="1.2" stroke="#222" stroke-width="1.1"/><path d="M8.7 10C7.7 10 7 10.4 7 11.1C7 11.8 7.7 12.2 8.7 12.2" stroke="#222" stroke-width="1.05" stroke-linecap="round"/><path d="M15.3 10C16.3 10 17 10.4 17 11.1C17 11.8 16.3 12.2 15.3 12.2" stroke="#222" stroke-width="1.05" stroke-linecap="round"/><path d="M9.6 12C10.1 11.2 10.6 11.2 11.1 12C11.6 12.8 12.1 12.8 12.6 12C13.1 11.2 13.6 11.2 14.1 12" stroke="#222" stroke-width="0.9" stroke-linecap="round"/><path d="M7.3 12.8C5.3 13.9 5.5 15.7 8.7 16.5C10 16.8 11.2 16.9 12.3 16.8" stroke="#222" stroke-width="1.05" stroke-linecap="round"/><path d="M12.3 16.8L16.6 15.3" stroke="#222" stroke-width="1.05" stroke-linecap="round" stroke-dasharray="1.5 1.6"/><path d="M12.3 16.8L14.3 16.6M12.3 16.8L13.2 18.2" stroke="#222" stroke-width="1.05" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" class="exhibition-interaction-icon" title="Panorama" aria-label="Panorama">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="12" rx="9" ry="3.4" stroke="#222" stroke-width="1.2"/><ellipse cx="12" cy="12" rx="3.4" ry="9" stroke="#222" stroke-width="1.2"/><text x="12.5" y="14" font-family="Arial, sans-serif" font-size="5" fill="#222" text-anchor="middle">360°</text></svg>
+                </button>
+                <button type="button" class="exhibition-interaction-icon" title="museum guide tour" aria-label="museum guide tour">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3.4" stroke="#222" stroke-width="1.3"/><path d="M5 20.5C5 16.6 8.13 13.5 12 13.5C15.87 13.5 19 16.6 19 20.5" stroke="#222" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="exhibition-cards">
+            <div class="exhibition-peek exhibition-peek--nominal-white" aria-hidden="true"></div>
+            <div class="exhibition-peek exhibition-peek--nominal" aria-hidden="true"></div>
+            <div class="exhibition-peek exhibition-peek--perfection-white" aria-hidden="true"></div>
+            <div class="exhibition-peek exhibition-peek--perfection-a" aria-hidden="true"></div>
+            {% for ex in exhibitions %}
+            {% set variant = 'stacked' if loop.index0 == 2 else ('split-right' if loop.index0 == 1 else 'split-left') %}
+            <div class="exhibition-card exhibition-card--{{ variant }}">
+                {% if variant == 'stacked' %}
+                <div class="exhibition-card-top">
+                    <div class="exhibition-card-media" {% if ex.image %}style="background-image:url('{{ url_for('static', filename=ex.image) }}')"{% endif %}>
+                        <button type="button" class="exhibition-card-play" aria-label="Play video: {{ ex.title }}" data-video-play data-video-src="{{ url_for('static', filename=ex.video) if ex.video else '' }}">&#9654;</button>
+                    </div>
+                    <div class="exhibition-card-head">
+                        <div class="exhibition-card-underline"></div>
+                        <div class="exhibition-card-artist">{{ ex.artist }}</div>
+                    </div>
+                </div>
+                <div class="exhibition-card-lower">
+                    <p>{{ ex.intro }}</p>
+                    <div class="exhibition-card-footer">
+                        <span class="exhibition-card-date"><img src="{{ url_for('static', filename='site/img/Icon calendar.svg') }}" alt=""> {{ ex.dates }}</span>
+                        <a class="button button_type_transparent read-more-link" href="{{ url_for('exhibition', slug=ex.slug) }}">Read more</a>
+                    </div>
+                </div>
+                {% elif variant == 'split-left' %}
+                <div class="exhibition-card-row">
+                    <div class="exhibition-card-media" {% if ex.image %}style="background-image:url('{{ url_for('static', filename=ex.image) }}')"{% endif %}>
+                        <button type="button" class="exhibition-card-play" aria-label="Play video: {{ ex.title }}" data-video-play data-video-src="{{ url_for('static', filename=ex.video) if ex.video else '' }}">&#9654;</button>
+                    </div>
+                    <div class="exhibition-card-body exhibition-card-body--no-caption">
+                        <p>{{ ex.intro }}</p>
+                        <div class="exhibition-card-footer">
+                            <span class="exhibition-card-date"><img src="{{ url_for('static', filename='site/img/Icon calendar.svg') }}" alt=""> {{ ex.dates }}</span>
+                            <a class="button button_type_transparent read-more-link" href="{{ url_for('exhibition', slug=ex.slug) }}">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="exhibition-card-row">
+                    <div class="exhibition-card-media" {% if ex.image %}style="background-image:url('{{ url_for('static', filename=ex.image) }}')"{% endif %}>
+                        <button type="button" class="exhibition-card-play" aria-label="Play video: {{ ex.title }}" data-video-play data-video-src="{{ url_for('static', filename=ex.video) if ex.video else '' }}">&#9654;</button>
+                    </div>
+                    <div class="exhibition-card-body">
+                        <div class="exhibition-card-underline"></div>
+                        <div class="exhibition-card-artist">{{ ex.artist }}</div>
+                        <p>{{ ex.intro }}</p>
+                        <div class="exhibition-card-footer">
+                            <span class="exhibition-card-date"><img src="{{ url_for('static', filename='site/img/Icon calendar.svg') }}" alt=""> {{ ex.dates }}</span>
+                            <a class="button button_type_transparent read-more-link" href="{{ url_for('exhibition', slug=ex.slug) }}">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="exhibition-card-title-wrap">
+                    <h4 class="exhibition-card-title is-light">{{ ex.title.upper() }}</h4>
+                    <h4 class="exhibition-card-title is-dark">{{ ex.title.upper() }}</h4>
+                    {% if variant == 'split-left' %}
+                    <div class="exhibition-card-underline exhibition-card-underline--overlay"></div>
+                    <div class="exhibition-card-artist exhibition-card-artist--overlay">{{ ex.artist }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row justify-content-center">
+            <a class="button" href="{{ url_for('exhibition', slug=featured.slug) }}">See all exhibitions</a>
+        </div>
+    </div>
+
+    <!-- Модалка воспроизведения видео для карточек выставок (кнопка ▶ на картинке) -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-box">
+            <button type="button" class="video-modal-close" id="video-modal-close" aria-label="Close video">&times;</button>
+            <video id="video-modal-player" controls playsinline></video>
+            <p class="video-modal-error" id="video-modal-error">This video isn't available yet.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Секция EVENT -->
+<section class="event section" id="events">
+    <div class="container">
+        <div class="row razdelitel">
+            <div class="d-flex align-items-center col-2 ml-auto">
+                <h3>Event</h3>
+            </div>
+        </div>
+        <div class="row japanese-content">
+            <div class="japanese-text col-12 col-lg-3">
+                     <div class="japanese-word">
+                        <p>{{ events[0].title.split(' ')[0] }}</p>
+                        <p>Minimal</p>
+                        <p>Design</p>
+                    </div>
+                    <div class="japanese-data">
+                        <div class="j-data">
+                            <p><img src="{{ url_for('static', filename='site/img/Icon time.svg') }}" alt="time"> {{ events[0].time }}</p>
+                            <p><img src="{{ url_for('static', filename='site/img/Icon calendar.svg') }}" alt="date"> {{ events[0].date }}</p>
+                        </div>
+                    </div>
+            </div>
+
+                <div class="japanese-img col-12 col-lg-4">
+                    <img src="{{ url_for('static', filename='site/img/Japanese.svg') }}" alt="Japanese">
+                </div>
+
+            <div class="japanese-text col-12 col-lg-5">
+                    <h6>
+                    {{ events[0].type }}
+                    </h6>
+                    <p class="about-japanese">
+                    {{ events[0].text }}
+                    </p>
+                <div class="row col-8">
+                    <a class="button button_type_transparent read-more-link" href="{{ url_for('event', slug=events[0].slug) }}">Read more</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row flex lives-content">
+            <div class="lives-text col-12 col-lg-7">
+                <div class="flex mr-auto">
+                    <div class="about-cinema">
+                        <p>How to apply the principles of minimalism in your daily life?</p>
+                    </div>
+                        <img src="{{ url_for('static', filename='site/img/Line 298.svg') }}" alt="">
+                        <div class="data-lives">
+                            <div class="d-lives">
+                                 <p><img src="{{ url_for('static', filename='site/img/Icon time.svg') }}" alt="time"> {{ events[1].time }} </p>
+                                <p><img src="{{ url_for('static', filename='site/img/Icon calendar.svg') }}" alt="date"> {{ events[1].date }}</p>
+                            </div>
+                        </div>
+                 </div>
+
+                <div class="flex ml-auto">
+                        <h6>
+                            {{ events[1].type }}
+                        </h6>
+                        <p class="about-live ml-auto">
+                            {{ events[1].text }}
+                        </p>
+                    <div class="row col-4 ml-auto">
+                        <a class="button button_type_transparent botton_type_pravo read-more-link" href="{{ url_for('event', slug=events[1].slug) }}">Read more</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 img-cinema">
+                <h5>{{ events[1].title }}</h5>
+                <img class="foto-lives w-100" src="{{ url_for('static', filename='site/img/in our lives.svg') }}" alt="{{ events[1].title }}">
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <a class="button live-btn" href="#events">See all events</a>
+        </div>
+    </div>
+</section>
+
+<!-- Секция LISTEN (по мотивам исходного макета, 1.pdf) -->
+<section class="listen section" id="listen">
+    <div class="container">
+        <div class="section-header-row">
+            <div class="section-divider-heading">
+                <h3>Listen</h3>
+            </div>
+            <div class="section-header-line" aria-hidden="true"></div>
+        </div>
+        <div class="podcast-row">
+            <div class="podcast-diamond-wrap">
+                <div class="podcast-diamond">
+                    <span class="podcast-diamond-line podcast-diamond-line--1" aria-hidden="true"></span>
+                    <span class="podcast-diamond-line podcast-diamond-line--2" aria-hidden="true"></span>
+                    <div class="podcast-diamond-inner">
+                        <p>Aesthetics<br>of minimalism</p>
+                        <div class="podcast-diamond-underline"></div>
+                        <span class="podcast-label">Podcast</span>
+                    </div>
+                </div>
+            </div>
+            <button class="podcast-play" aria-label="Play" type="button" data-podcast-play>&#9654;</button>
+            <div class="podcast-waveform" data-podcast-seek aria-hidden="true">
+                <div class="podcast-waveform-bars">
+                    {% for peak in podcast.waveform %}<span style="height:{{ (peak * 100) | round(1) }}%"></span>{% endfor %}
+                </div>
+                <div class="podcast-waveform-bars podcast-waveform-bars--accent" data-podcast-progress>
+                    {% for peak in podcast.waveform %}<span style="height:{{ (peak * 100) | round(1) }}%"></span>{% endfor %}
+                </div>
+            </div>
+            <a class="podcast-download" aria-label="Download episode" download href="{{ url_for('static', filename=podcast.audio) }}">&#8681;</a>
+            <div class="podcast-duration"><img src="{{ url_for('static', filename='site/img/Icon time.svg') }}" alt=""> <span data-podcast-time>0:00</span></div>
+            <audio data-podcast-audio preload="metadata" src="{{ url_for('static', filename=podcast.audio) }}"></audio>
+            <p class="podcast-text">Minimalism doesn't pretend to be an additional meaning - only the order, beauty and
+                simplicity of the object itself has meaning.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Секция ART ARCHIVE (по мотивам исходного макета, 1.pdf) -->
+<section class="archive-section section" id="archive">
+    <div class="container">
+        <div class="archive-band" style="background-image:url('{{ url_for('static', filename='img/archive-blob.jpg') }}')">
+            <div class="archive-band-box">
+                <h3 class="archive-band-title">ART ARCHIVE <span>/ minimalism</span></h3>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="archive-row">
+            <div class="archive-side-label">Balance<br>Form<br>Simple</div>
+            <div class="archive-cards-panel">
+                <div class="archive-cards" data-archive-track style="--archive-count: {{ archive|length }};">
+                    {% for a in archive %}
+                    <div class="archive-card">
+                        <div class="archive-card-date">{{ a.date }}</div>
+                        <div class="archive-card-media" {% if a.image %}style="background-image:url('{{ url_for('static', filename=a.image) }}')"{% endif %}></div>
+                        <h4>{{ a.title }}</h4>
+                        <p>{{ a.artist }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="archive-nav archive-nav-prev" aria-label="Previous" type="button" data-archive-prev>&#8249;</button>
+                <button class="archive-nav archive-nav-next" aria-label="Next" type="button" data-archive-next>&#8250;</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <a class="button" href="#archive">See all archive</a>
+        </div>
+    </div>
+</section>
+
+<!-- Секция IN FUTURE -->
+<section class="future-section section" id="future">
+    <div class="container">
+        <div class="section-header-row">
+            <div class="section-divider-heading">
+                <h3>In Future</h3>
+            </div>
+            <div class="section-header-line" aria-hidden="true"></div>
+        </div>
+        <p class="exhibition-list-intro" style="max-width:640px;">New exhibitions are being prepared behind the scenes. Leave your email and we will let you know the moment they are announced.</p>
+        <div class="future-teaser-grid">
+            {% for f in future_exhibitions %}
+            <div class="future-teaser-card" {% if f.image %}style="background-image:url('{{ url_for('static', filename=f.image) }}')"{% endif %}>
+                <span class="future-teaser-eyebrow">{{ f.season }}</span>
+                <h4>{{ f.title }}</h4>
+                <button type="button" class="btn btn-outline" data-future-notify>Notify me</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Секция SUBSCRIBE -->
+<form id="subscribe-form" class="row justify-content-center align-items-center section-sub" novalidate>
+    <label for="subscribe-email">NEWSLETTER<span class="label-accent">SIGN-UP</span></label>
+    <input type="email" id="subscribe-email" name="email" size="20" placeholder="Enter your email" required>
+    <button class="button button_type_sabscribe" type="submit">Subscribe</button>
+    <div class="subscribe-msg" id="subscribe-msg" role="status" aria-live="polite"></div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/subscribe.js') }}"></script>
+<script src="{{ url_for('static', filename='js/podcast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/archive-carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='js/exhibition-video.js') }}"></script>
+<script src="{{ url_for('static', filename='js/future-notify.js') }}"></script>
+{% endblock %}
